@@ -114,7 +114,7 @@ section{padding-block:clamp(4rem,8vh,6.5rem)}
 .ab .lede{font-size:1.1em;color:var(--text);font-weight:300}
 .ab strong{color:var(--text);font-weight:500}
 .shot{width:100%;aspect-ratio:4/5;object-fit:cover;background:var(--raised);
-  border:1px solid var(--line-soft);filter:grayscale(0) contrast(1.04);
+  border:1px solid var(--line-soft);filter:grayscale(1) contrast(1.04);
   transition:filter .55s var(--ease)}
 .shot:hover{filter:grayscale(0)}
 .dl{margin:1.4rem 0 0;border-top:1px solid var(--line-soft)}
@@ -375,14 +375,12 @@ footer{border-top:1px solid var(--line-soft);padding:1.6rem 0 2.5rem;
           algorithm formulation, then biomedical engineering — and that path shapes how I approach
           the brain: as a system whose organisation can be measured, modelled and compared across
           conditions. My doctoral work characterised dynamic functional network connectivity in
-          <strong>frontal lobe epilepsy</strong>, and the questions have since widened to <strong> Reward-Based disorders
-          including; <strong>substance use, obsessive–compulsive and gaming disorders</strong>, where the
-          central puzzle is which neural alterations are shared across addictions and which are
-          specific to one.
+          <strong>frontal lobe epilepsy</strong>, and the questions have since widened to <strong>Rewward-based disorders including but not limited to
+          <strong>Addiction (behavioral and Substance), <strong>affective and reward-related dysfunction(Anhedonia)</strong> and affective (mood) disorders(e.g., Major depressive disorder (MDD)).
         </p>
         <p>
           Methodologically I work with functional and structural MRI, graph-theoretical and network
-          models, multivariate and machine-learning analyses(AI), and coordinate-based meta-analysis.
+          models, multivariate and machine-learning analyses, and coordinate-based meta-analysis.
           A recurring theme is <strong>evidence synthesis</strong>: pooling across many small,
           heterogeneous studies to find the effects that survive. Alongside this I develop
           <strong>software applications for neuroscience and brain health</strong> — hub-analysis
@@ -1070,7 +1068,7 @@ footer{border-top:1px solid var(--line-soft);padding:1.6rem 0 2.5rem;
 
   <section id="software">
     <div class="shead up">
-      <h2>Software</h2><span class="mono">Tools &amp; code</span>
+      <h2>Software</h2><span class="mono">Selected repositories</span>
       <a class="mono spill" href="https://github.com/bklugah?tab=repositories">All repositories ↗</a>
     </div>
     <div class="repos up" id="repos" data-gh="bklugah">
@@ -1439,6 +1437,36 @@ footer{border-top:1px solid var(--line-soft);padding:1.6rem 0 2.5rem;
     });
   });
 
+  /* ══════════════════════════════════════════════════════════════
+     WHICH REPOSITORIES APPEAR IN THE SOFTWARE SECTION
+
+     Option A — name them here, in the order you want them shown:
+         var PICKED = ["MQGA", "MIEHS", "insula-mapping"];
+
+     Option B — override the description GitHub holds, for a repo
+     whose one-liner is too terse for a research audience:
+         var PICKED = [
+           {name: "MQGA",  note: "Multi-graph hub analysis for brain networks."},
+           {name: "MIEHS", note: "Entropy-based hub scoring, as published in NeuroImage."}
+         ];
+
+     Option C — leave PICKED empty and set TOPIC to a GitHub topic
+     tag. Every repo carrying that tag appears, so you curate from
+     GitHub itself without ever editing this file:
+         var PICKED = [];  var TOPIC = "featured";
+
+     Leave both empty and it falls back to your six most-starred.
+     Names are matched case-insensitively; a name that does not
+     match any repo is skipped rather than breaking the section.
+     ══════════════════════════════════════════════════════════════ */
+  var PICKED = [
+    {name: "MBCT",
+     note: "Desktop application for multimodal brain-network characterisation — functional network correspondence, meta-analytic decoding, PET receptor and transcriptomic mapping, with a built-in statistical brain-map viewer."},
+    {name: "Custom_Vancouver_6Authors_EtAl",
+     note: "Citation style implementing the six-author Vancouver format recommended by Molecular Psychiatry."}
+  ];
+  var TOPIC  = "";
+
   var grid = document.getElementById("repos");
   var gh = grid && grid.dataset.gh;
   var esc = function(s){
@@ -1446,21 +1474,49 @@ footer{border-top:1px solid var(--line-soft);padding:1.6rem 0 2.5rem;
       return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];
     });
   };
+  var msg = function(text){
+    grid.innerHTML = '<div class="loading">' + text + ' &mdash; ' +
+      '<a href="https://github.com/'+esc(gh)+'" style="color:var(--hot)">github.com/'+esc(gh)+'</a></div>';
+  };
+
   if(gh){
     fetch("https://api.github.com/users/" + gh + "/repos?sort=updated&per_page=100")
       .then(function(r){ if(!r.ok) throw new Error(r.status); return r.json(); })
       .then(function(rs){
-        var top = rs.filter(function(r){ return !r.fork && !r.archived; })
-                    .sort(function(a,b){
-                      return (b.stargazers_count - a.stargazers_count) ||
-                             (new Date(b.pushed_at) - new Date(a.pushed_at));
-                    }).slice(0,6);
-        if(!top.length){
-          grid.innerHTML = '<div class="loading">No public repositories yet — ' +
-            '<a href="https://github.com/'+esc(gh)+'" style="color:var(--hot)">github.com/'+esc(gh)+'</a></div>';
+        var live = rs.filter(function(r){ return !r.archived; });
+        var chosen = [];
+
+        if(PICKED.length){
+          var byName = {};
+          live.forEach(function(r){ byName[r.name.toLowerCase()] = r; });
+          PICKED.forEach(function(entry){
+            var name = (typeof entry === "string") ? entry : entry.name;
+            var hit  = byName[String(name).toLowerCase()];
+            if(hit){
+              if(typeof entry === "object" && entry.note){ hit = Object.assign({}, hit, {description: entry.note}); }
+              chosen.push(hit);
+            }
+          });
+        } else if(TOPIC){
+          chosen = live.filter(function(r){
+            return (r.topics || []).indexOf(TOPIC) !== -1;
+          });
+        } else {
+          chosen = live.filter(function(r){ return !r.fork; })
+                       .sort(function(a,b){
+                         return (b.stargazers_count - a.stargazers_count) ||
+                                (new Date(b.pushed_at) - new Date(a.pushed_at));
+                       }).slice(0,6);
+        }
+
+        if(!chosen.length){
+          msg(PICKED.length || TOPIC
+              ? "None of the selected repositories were found"
+              : "No public repositories yet");
           return;
         }
-        grid.innerHTML = top.map(function(r){
+
+        grid.innerHTML = chosen.map(function(r){
           return '<a class="repo" href="'+esc(r.html_url)+'">' +
             '<h3>'+esc(r.name)+' <span class="ar">\u2197</span></h3>' +
             '<p>'+esc(r.description || "No description yet.")+'</p>' +
@@ -1470,8 +1526,7 @@ footer{border-top:1px solid var(--line-soft);padding:1.6rem 0 2.5rem;
         }).join("");
       })
       .catch(function(){
-        grid.innerHTML = '<div class="loading">Could not reach the GitHub API just now — ' +
-          '<a href="https://github.com/'+esc(gh)+'" style="color:var(--hot)">browse the repositories directly</a>.</div>';
+        msg("Could not reach the GitHub API just now");
       });
   }
 
