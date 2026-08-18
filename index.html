@@ -1,0 +1,1483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Benjamin Klugah-Brown — Computational Neuroscience</title>
+<meta name="description" content="Benjamin Klugah-Brown, PhD. Associate Professor and Principal Investigator of the BrainInformatics and Reward Systems (BIRS) Research Group at UESTC. Brain networks, addiction and reward, neuroimaging meta-analysis, machine learning, and software for brain health." />
+<meta property="og:title" content="Benjamin Klugah-Brown — Computational Neuroscience" />
+<meta property="og:description" content="Brain networks, reward and addiction, neuroimaging meta-analysis, and software for neuroscience and brain health." />
+<meta property="og:type" content="profile" />
+<meta property="og:image" content="portrait.jpg" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%230B0E14'/><rect x='5' y='5' width='9' height='9' fill='%23FF7A2F'/><rect x='18' y='18' width='9' height='9' fill='%233FB6E8'/></svg>" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+<style>
+:root{
+  --void:#0B0E14; --panel:#121722; --raised:#1A2130;
+  --line:#26303F; --line-soft:#1C2432;
+  --text:#E9EDF4; --dim:#A3B0C4; --muted:#7A88A0;
+  --hot:#FF7A2F; --peak:#FFC24B; --cold:#3FB6E8;
+  --hot-wash:rgba(255,122,47,.10);
+  --display:"Archivo",system-ui,sans-serif;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,monospace;
+  --rail:230px; --measure:72ch;
+  --ease:cubic-bezier(.22,.68,.28,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--void);color:var(--text);font-family:var(--sans);
+  font-weight:300;font-size:clamp(15.5px,.5vw + 14px,17px);line-height:1.68;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit}
+img{max-width:100%;display:block}
+:focus-visible{outline:2px solid var(--hot);outline-offset:3px;border-radius:2px}
+::selection{background:var(--hot);color:var(--void)}
+h1,h2,h3{font-family:var(--display);margin:0;font-variation-settings:"wdth" 112;
+  font-weight:700;line-height:1.04;letter-spacing:-.015em}
+.mono{font-family:var(--mono);font-size:.68rem;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--muted);font-weight:500}
+
+.rail{position:fixed;inset:0 auto 0 0;width:var(--rail);z-index:70;
+  padding:2.4rem 1.3rem 2.4rem 2.2rem;display:flex;flex-direction:column;gap:1.9rem;
+  background:var(--panel);border-right:1px solid var(--line-soft);overflow-y:auto}
+.rail-id{text-decoration:none;display:block}
+.rail-id b{font-family:var(--display);font-variation-settings:"wdth" 118;font-weight:700;
+  font-size:.98rem;letter-spacing:-.01em;display:block;line-height:1.2}
+.rail-id span{display:block;margin-top:.45rem}
+.rail nav{display:flex;flex-direction:column;gap:.1rem}
+.rail nav a{position:relative;padding:.34rem 0 .34rem 1.6rem;font-size:.84rem;
+  text-decoration:none;color:var(--muted);transition:color .25s var(--ease)}
+.rail nav a::before{content:"";position:absolute;left:0;top:50%;translate:0 -50%;
+  width:8px;height:2px;background:var(--line);
+  transition:width .3s var(--ease),background .3s var(--ease)}
+.rail nav a:hover{color:var(--text)}
+.rail nav a[aria-current="true"]{color:var(--text);font-weight:500}
+.rail nav a[aria-current="true"]::before{width:20px;background:var(--hot)}
+.rail-end{margin-top:auto;display:flex;flex-direction:column;gap:.4rem;padding-top:1.4rem}
+.rail-end a{font-size:.77rem;text-decoration:none;color:var(--muted);transition:color .2s var(--ease)}
+.rail-end a:hover{color:var(--hot)}
+.bar{display:none}
+
+.shell{margin-left:var(--rail)}
+.wrap{max-width:1120px;margin-inline:auto;padding-inline:clamp(1.25rem,4vw,4rem)}
+section{padding-block:clamp(4rem,8vh,6.5rem)}
+.hr{border:0;border-top:1px solid var(--line-soft);margin:0}
+.shead{display:flex;align-items:baseline;gap:1.2rem;flex-wrap:wrap;margin-bottom:2.4rem}
+.shead h2{font-size:clamp(1.75rem,3.2vw,2.6rem)}
+.shead .mono{padding-bottom:.3rem}
+.spill{margin-left:auto;text-decoration:none;color:var(--hot)}
+
+.hero{padding-block:clamp(3.2rem,6.5vh,5.2rem)}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.8fr);
+  gap:clamp(2rem,5vw,4rem);align-items:center}
+.eyebrow{display:flex;align-items:center;gap:.65rem;margin-bottom:1.6rem;flex-wrap:wrap}
+.live{width:6px;height:6px;border-radius:50%;background:var(--hot);flex:none;
+  animation:beat 3s var(--ease) infinite}
+@keyframes beat{0%,100%{opacity:1}50%{opacity:.3}}
+.name{font-family:var(--display);font-variation-settings:"wdth" 118;font-weight:800;
+  text-transform:uppercase;font-size:clamp(2rem,5.4vw,4.35rem);line-height:.92;
+  letter-spacing:-.035em;margin:0 0 1.4rem}
+.name .gn{display:block;color:var(--dim);font-weight:500;font-size:.5em;
+  letter-spacing:.02em;margin-bottom:.35rem}
+.name .sn{display:block;
+  background:linear-gradient(96deg,var(--text) 0%,var(--text) 52%,var(--peak) 78%,var(--hot) 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+.thesis{font-size:clamp(1rem,1.3vw,1.14rem);line-height:1.6;color:var(--dim);
+  max-width:48ch;margin:0 0 2rem;font-weight:300}
+.thesis b{color:var(--text);font-weight:500}
+.chips{display:flex;flex-wrap:wrap;gap:.5rem}
+.chip{display:inline-flex;align-items:center;gap:.4rem;padding:.5rem .95rem;
+  border:1px solid var(--line);border-radius:2px;text-decoration:none;font-size:.81rem;
+  font-weight:400;color:var(--dim);background:transparent;transition:all .24s var(--ease)}
+.chip:hover{border-color:var(--hot);color:var(--text);background:var(--hot-wash);transform:translateY(-2px)}
+.chip.hot{background:var(--hot);border-color:var(--hot);color:#120801;font-weight:500}
+.chip.hot:hover{background:var(--peak);border-color:var(--peak);color:#120801}
+
+.mx{border:1px solid var(--line-soft);background:var(--panel);border-radius:3px;padding:1.1rem 1.1rem .9rem}
+.mx-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:.7rem;gap:1rem}
+#matrix{width:100%;height:auto;display:block;cursor:crosshair}
+#matrix rect.cell{transition:opacity .5s var(--ease)}
+.mx-read{margin-top:.75rem;padding-top:.7rem;border-top:1px solid var(--line-soft);
+  font-family:var(--mono);font-size:.68rem;color:var(--muted);min-height:3.4em;line-height:1.5}
+.mx-read b{color:var(--peak);font-weight:500}
+.mx-read i{color:var(--cold);font-style:normal}
+
+.ab{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,.8fr);
+  gap:clamp(2rem,5vw,4rem);align-items:start}
+.ab p{max-width:var(--measure);margin:0 0 1.15rem;color:var(--dim)}
+.ab p:last-child{margin-bottom:0}
+.ab .lede{font-size:1.1em;color:var(--text);font-weight:300}
+.ab strong{color:var(--text);font-weight:500}
+.shot{width:100%;aspect-ratio:4/5;object-fit:cover;background:var(--raised);
+  border:1px solid var(--line-soft);filter:grayscale(1) contrast(1.04);
+  transition:filter .55s var(--ease)}
+.shot:hover{filter:grayscale(0)}
+.dl{margin:1.4rem 0 0;border-top:1px solid var(--line-soft)}
+.dl > div{display:flex;justify-content:space-between;gap:1rem;padding:.58rem 0;
+  border-bottom:1px solid var(--line-soft);font-size:.83rem}
+.dl dt{font-family:var(--mono);font-size:.63rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--muted);padding-top:.25rem;flex:none}
+.dl dd{margin:0;text-align:right;color:var(--text);font-weight:400}
+
+.areas{display:grid;grid-template-columns:repeat(auto-fit,minmax(272px,1fr));gap:1px;
+  background:var(--line-soft);border:1px solid var(--line-soft)}
+.area{background:var(--panel);padding:1.6rem 1.5rem 1.5rem;
+  transition:background .3s var(--ease);scroll-margin-top:6rem}
+.area:hover,.area:target{background:var(--raised)}
+.area-code{display:flex;align-items:center;gap:.5rem;margin-bottom:.85rem}
+.area-code .sq{width:10px;height:10px;flex:none}
+.area h3{font-size:1.08rem;font-variation-settings:"wdth" 108;margin-bottom:.55rem;letter-spacing:-.005em}
+.area p{margin:0 0 1rem;font-size:.89rem;color:var(--muted);line-height:1.6}
+.keys{display:flex;flex-wrap:wrap;gap:.3rem}
+.k{font-family:var(--mono);font-size:.63rem;padding:.2rem .5rem;
+  background:var(--hot-wash);color:var(--hot);letter-spacing:.03em}
+
+.filt{display:flex;gap:.35rem;flex-wrap:wrap;margin-bottom:1.5rem;align-items:center}
+.filt button{font-family:var(--mono);font-size:.65rem;letter-spacing:.11em;text-transform:uppercase;
+  padding:.4rem .78rem;border:1px solid var(--line);background:transparent;color:var(--muted);
+  cursor:pointer;transition:all .22s var(--ease);border-radius:2px}
+.filt button:hover{color:var(--text);border-color:var(--dim)}
+.filt button[aria-pressed="true"]{background:var(--text);border-color:var(--text);color:var(--void)}
+.count{font-family:var(--mono);font-size:.65rem;color:var(--muted);margin-left:auto;letter-spacing:.1em}
+
+.pubs{list-style:none;margin:0;padding:0;border-top:1px solid var(--line-soft)}
+.pub{border-bottom:1px solid var(--line-soft)}
+.pub[hidden]{display:none}
+.prow{width:100%;background:none;border:0;padding:1.25rem 0;cursor:pointer;
+  display:grid;grid-template-columns:4.4rem 1fr 1.4rem;gap:1.2rem;align-items:start;
+  text-align:left;font:inherit;color:inherit}
+.pyear{font-family:var(--mono);font-size:.78rem;color:var(--muted);padding-top:.15rem}
+.ptitle{display:block;font-family:var(--display);font-variation-settings:"wdth" 105;
+  font-weight:600;font-size:1.01rem;line-height:1.34;letter-spacing:-.005em;
+  margin-bottom:.42rem;transition:color .25s var(--ease)}
+.prow:hover .ptitle{color:var(--peak)}
+.pauth{display:block;font-size:.82rem;color:var(--muted);margin-bottom:.28rem}
+.pauth b{color:var(--text);font-weight:600}
+.pven{display:block;font-family:var(--mono);font-size:.69rem;color:var(--dim)}
+.pven em{font-style:normal;color:var(--hot)}
+.chev{width:15px;height:15px;color:var(--muted);margin-top:.4rem;transition:transform .3s var(--ease)}
+.pub.on .chev{transform:rotate(180deg);color:var(--hot)}
+.pbody{display:grid;grid-template-rows:0fr;transition:grid-template-rows .36s var(--ease)}
+.pub.on .pbody{grid-template-rows:1fr}
+.pbody > div{overflow:hidden}
+.pin{padding:0 0 1.4rem 5.6rem;max-width:var(--measure)}
+.pin p{margin:0 0 .95rem;font-size:.88rem;color:var(--dim)}
+.acts{display:flex;gap:.4rem;flex-wrap:wrap}
+.mini{font-family:var(--mono);font-size:.63rem;letter-spacing:.1em;text-transform:uppercase;
+  padding:.36rem .72rem;border:1px solid var(--line);background:transparent;color:var(--muted);
+  cursor:pointer;text-decoration:none;border-radius:2px;transition:all .2s var(--ease)}
+.mini:hover{background:var(--text);border-color:var(--text);color:var(--void)}
+.mini.ok{background:var(--peak);border-color:var(--peak);color:var(--void)}
+.bib{display:none}
+
+.repos{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1px;
+  background:var(--line-soft);border:1px solid var(--line-soft)}
+.repo{display:block;text-decoration:none;padding:1.4rem;background:var(--panel);
+  transition:background .3s var(--ease)}
+.repo:hover{background:var(--raised)}
+.repo h3{font-family:var(--mono);font-weight:500;font-size:.9rem;letter-spacing:-.01em;
+  margin:0 0 .55rem;display:flex;justify-content:space-between;gap:.6rem;align-items:center;color:var(--text)}
+.repo h3 .ar{color:var(--hot);flex:none;transition:transform .3s var(--ease)}
+.repo:hover h3 .ar{transform:translate(3px,-3px)}
+.repo p{margin:0 0 1rem;font-size:.85rem;color:var(--muted);min-height:2.9em;line-height:1.55}
+.rmeta{display:flex;gap:1rem;font-family:var(--mono);font-size:.65rem;color:var(--muted)}
+.rlang{display:inline-flex;align-items:center;gap:.35rem}
+.rlang::before{content:"";width:7px;height:7px;background:var(--cold)}
+.loading{padding:1.4rem;background:var(--panel);font-family:var(--mono);font-size:.7rem;color:var(--muted)}
+
+.cogrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(292px,1fr));gap:1px;
+  background:var(--line-soft);border:1px solid var(--line-soft)}
+.cocard{background:var(--panel);padding:1.35rem 1.3rem;display:flex;gap:.95rem;
+  align-items:flex-start;text-decoration:none;transition:background .3s var(--ease)}
+.cocard:hover{background:var(--raised)}
+.mgm{width:44px;height:44px;flex:none;display:grid;place-items:center;
+  font-family:var(--mono);font-size:.78rem;font-weight:500;letter-spacing:.01em;
+  color:var(--void);border-radius:2px;transition:transform .3s var(--ease)}
+.cocard:hover .mgm{transform:translateY(-2px)}
+.cotext{min-width:0}
+.cotext b{display:flex;justify-content:space-between;gap:.5rem;align-items:baseline;
+  font-family:var(--sans);font-weight:500;font-size:.94rem;line-height:1.3;
+  margin-bottom:.28rem;color:var(--text)}
+.cotext b .ar{color:var(--hot);flex:none;font-size:.8rem;opacity:0;
+  transition:opacity .3s var(--ease),transform .3s var(--ease)}
+.cocard:hover .cotext b .ar{opacity:1;transform:translate(2px,-2px)}
+.aff{display:block;font-family:var(--mono);font-size:.63rem;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--hot);margin-bottom:.5rem;line-height:1.45}
+.cofocus{display:block;font-size:.82rem;color:var(--muted);line-height:1.55}
+
+.log{list-style:none;margin:0;padding:0 0 0 1.5rem;position:relative}
+.log::before{content:"";position:absolute;left:0;top:.6rem;bottom:.8rem;width:1px;background:var(--line)}
+.ev{position:relative;padding-bottom:1.9rem}
+.ev::before{content:"";position:absolute;left:calc(-1.5rem - 3px);top:.55rem;width:7px;height:7px;
+  background:var(--void);border:1.5px solid var(--line)}
+.ev.pinned::before{background:var(--hot);border-color:var(--hot)}
+.ev-top{display:flex;gap:.75rem;align-items:center;margin-bottom:.3rem;flex-wrap:wrap}
+.tagg{font-family:var(--mono);font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;
+  padding:.16rem .45rem;background:var(--raised);color:var(--dim)}
+.ev.pinned .tagg{background:var(--hot);color:#120801}
+.ev h3{font-family:var(--sans);font-weight:500;font-size:.98rem;letter-spacing:0;line-height:1.45;margin:0 0 .3rem}
+.ev h3 em{font-style:italic;color:var(--dim);font-weight:400}
+.ev p{margin:0;font-size:.87rem;color:var(--muted);max-width:var(--measure)}
+
+.cta{border:1px solid var(--line);
+  background:radial-gradient(120% 140% at 88% 8%,rgba(255,122,47,.13) 0%,transparent 55%),var(--panel);
+  padding:clamp(2rem,4.5vw,3.2rem);margin-bottom:clamp(2.5rem,5vh,4rem)}
+.cta h2{font-size:clamp(1.7rem,3.6vw,2.6rem);margin:.85rem 0 1rem}
+.cta p{max-width:52ch;color:var(--dim);margin:0 0 1.8rem}
+
+.qrs{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem;
+  margin-top:2.2rem;padding-top:1.9rem;border-top:1px solid var(--line);max-width:560px}
+.qr{text-align:center;text-decoration:none;display:block}
+.qr svg{width:100%;max-width:118px;height:auto;margin:0 auto .7rem;
+  background:var(--text);padding:7px;border-radius:3px;
+  transition:transform .3s var(--ease),box-shadow .3s var(--ease)}
+.qr:hover svg{transform:translateY(-3px);box-shadow:0 10px 26px -14px rgba(255,122,47,.75)}
+.qr b{display:block;font-family:var(--mono);font-size:.64rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--text);font-weight:500;margin-bottom:.2rem}
+.qr span{display:block;font-family:var(--mono);font-size:.63rem;color:var(--muted);word-break:break-all}
+
+footer{border-top:1px solid var(--line-soft);padding:1.6rem 0 2.5rem;
+  display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+
+.up{opacity:0;transform:translateY(20px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.up.seen{opacity:1;transform:none}
+
+@media (max-width:1080px){
+  .rail{display:none}
+  .shell{margin-left:0}
+  .bar{display:flex;position:sticky;top:0;z-index:70;gap:1.05rem;align-items:center;
+    padding:.75rem clamp(1.25rem,4vw,2rem);background:rgba(11,14,20,.9);
+    backdrop-filter:blur(14px);border-bottom:1px solid var(--line-soft);
+    overflow-x:auto;scrollbar-width:none}
+  .bar::-webkit-scrollbar{display:none}
+  .bar a{text-decoration:none;font-size:.81rem;color:var(--muted);white-space:nowrap}
+  .bar a[aria-current="true"]{color:var(--hot);font-weight:500}
+  .bar .bm{font-family:var(--display);font-variation-settings:"wdth" 118;font-weight:700;color:var(--text)}
+  .hero-grid{grid-template-columns:1fr;gap:2.4rem}
+  .ab{grid-template-columns:1fr}
+  .shot{max-width:290px}
+}
+@media (max-width:600px){
+  .prow{grid-template-columns:1fr 1.4rem;gap:.8rem}
+  .pyear{grid-column:1;font-size:.72rem;margin-bottom:-.35rem}
+  .pmain{grid-column:1/-1}
+  .chev{grid-row:1;grid-column:2}
+  .pin{padding-left:0}
+  .dl > div{flex-direction:column;gap:.05rem}
+  .dl dd{text-align:left}
+  .count{margin-left:0;width:100%}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important}
+  .up{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+
+<aside class="rail">
+  <a class="rail-id" href="#home">
+    <b>Benjamin<br>Klugah-Brown</b>
+    <span class="mono">PhD · UESTC</span>
+  </a>
+  <nav id="railnav" aria-label="Sections">
+    <a href="#home">Home</a>
+    <a href="#about">About</a>
+    <a href="#research">Research</a>
+    <a href="#publications">Publications</a>
+    <a href="#software">Software</a>
+    <a href="#collaborators">Collaborators</a>
+    <a href="#news">News</a>
+    <a href="#contact">Contact</a>
+  </nav>
+  <div class="rail-end">
+    <a href="https://scholar.google.com/citations?user=fvYLHCgAAAAJ">Google Scholar ↗</a>
+    <a href="https://orcid.org/0000-0002-3946-9557">ORCID ↗</a>
+    <a href="https://github.com/bklugah">GitHub ↗</a>
+    <a href="https://www.linkedin.com/in/afromt/">LinkedIn ↗</a>
+    <a href="cv.pdf">CV (PDF) ↗</a>
+  </div>
+</aside>
+
+<div class="bar" id="bar">
+  <a class="bm" href="#home">Klugah-Brown</a>
+  <a href="#about">About</a>
+  <a href="#research">Research</a>
+  <a href="#publications">Publications</a>
+  <a href="#software">Software</a>
+  <a href="#collaborators">Collaborators</a>
+  <a href="#news">News</a>
+  <a href="#contact">Contact</a>
+</div>
+
+<div class="shell">
+<main class="wrap">
+
+  <section id="home" class="hero">
+    <div class="hero-grid">
+      <div>
+        <div class="eyebrow">
+          <span class="live"></span>
+          <span class="mono">Associate Professor · Principal Investigator, BIRS</span>
+        </div>
+        <h1 class="name">
+          <span class="gn">Benjamin</span>
+          <span class="sn">Klugah-Brown</span>
+        </h1>
+        <p class="thesis">
+          I study how <b>large-scale brain networks</b> reorganise in addiction, compulsivity and
+          reward dysfunction, build the computational methods that turn noisy neuroimaging data into
+          <b>interpretable, reproducible biomarkers</b>, and develop <b>software applications for
+          neuroscience and brain health</b>.
+        </p>
+        <div class="chips">
+          <a class="chip hot" href="#publications">Publications</a>
+          <a class="chip" href="cv.pdf">Curriculum vitae</a>
+          <a class="chip" href="https://scholar.google.com/citations?user=fvYLHCgAAAAJ">Scholar</a>
+          <a class="chip" href="https://github.com/bklugah">GitHub</a>
+          <a class="chip" href="mailto:bklugah@uestc.edu.cn">Email</a>
+        </div>
+      </div>
+
+      <figure class="mx up" style="margin:0">
+        <div class="mx-top">
+          <span class="mono">Fig. 1 — Domain adjacency</span>
+          <span class="mono" style="color:var(--hot)">r</span>
+        </div>
+        <svg id="matrix" viewBox="0 0 424 404" role="img"
+             aria-label="Adjacency matrix of six research domains arranged in modular blocks."></svg>
+        <figcaption class="mx-read" id="readout">
+          Six research domains, ordered by module. Hover a cell to read the pair it connects;
+          click to jump to that area.
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <hr class="hr" />
+
+  <section id="about">
+    <div class="shead up"><h2>About</h2><span class="mono">Profile</span></div>
+    <div class="ab">
+      <div class="up">
+        <p class="lede">
+          I lead the <strong>BrainInformatics and Reward Systems (BIRS) Research Group</strong>
+          within the Brain Connectivity Lab at the School of Life Science and Technology, UESTC,
+          where I am an Associate Professor.
+        </p>
+        <p>
+          My background is interdisciplinary by design — computer science, then mathematical
+          algorithm formulation, then biomedical engineering — and that path shapes how I approach
+          the brain: as a system whose organisation can be measured, modelled and compared across
+          conditions. My doctoral work characterised dynamic functional network connectivity in
+          <strong>frontal lobe epilepsy</strong>, and the questions have since widened to
+          <strong>substance use, obsessive–compulsive and gaming disorders</strong>, where the
+          central puzzle is which neural alterations are shared across addictions and which are
+          specific to one.
+        </p>
+        <p>
+          Methodologically I work with functional and structural MRI, graph-theoretical and network
+          models, multivariate and machine-learning analyses, and coordinate-based meta-analysis.
+          A recurring theme is <strong>evidence synthesis</strong>: pooling across many small,
+          heterogeneous studies to find the effects that survive. Alongside this I develop
+          <strong>software applications for neuroscience and brain health</strong> — hub-analysis
+          measures such as MQGA and MIEHS, classification pipelines, and reproducible analysis
+          frameworks that other groups can pick up and run.
+        </p>
+        <p>
+          I am an <strong>Associate Editor at Frontiers in Neuroimaging</strong>, a member of the
+          <strong>China–Cuba Belt and Road Joint Laboratory on Neurotechnology and Brain-Apparatus
+          Communication</strong> at the School of Life Science and Technology, and I supervise
+          doctoral and master's students across computational neuroscience, biomedical engineering
+          and machine learning.
+        </p>
+      </div>
+      <div class="up">
+        <img class="shot" src="portrait.jpg" alt="Benjamin Klugah-Brown" onerror="this.style.display='none'" />
+        <dl class="dl">
+          <div><dt>Position</dt><dd>Associate Professor</dd></div>
+          <div><dt>Group</dt><dd>BIRS · Brain Connectivity Lab</dd></div>
+          <div><dt>School</dt><dd>Life Science &amp; Technology</dd></div>
+          <div><dt>Institution</dt><dd>UESTC, Chengdu</dd></div>
+          <div><dt>PhD</dt><dd>Biomedical Engineering, 2018</dd></div>
+          <div><dt>Editor</dt><dd>Frontiers in Neuroimaging</dd></div>
+          <div><dt>Papers</dt><dd>80+ peer-reviewed</dd></div>
+          <div><dt>ORCID</dt><dd>0000-0002-3946-9557</dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <hr class="hr" />
+
+  <section id="research">
+    <div class="shead up">
+      <h2>Research</h2><span class="mono">Six domains</span>
+      <a class="mono spill" href="#home">See adjacency ↑</a>
+    </div>
+    <div class="areas up">
+      <article class="area" id="area-NET">
+        <div class="area-code"><span class="sq" style="background:var(--hot)"></span><span class="mono">NET</span></div>
+        <h3>Networks &amp; computational neuroscience</h3>
+        <p>Brain organisation as a network problem: static and dynamic functional connectivity,
+          graph-theoretical hub measures, structural covariance, and how large-scale systems
+          interact to produce behaviour.</p>
+        <div class="keys"><span class="k">connectomics</span><span class="k">graph theory</span><span class="k">dFNC</span></div>
+      </article>
+      <article class="area" id="area-IMG">
+        <div class="area-code"><span class="sq" style="background:var(--peak)"></span><span class="mono">IMG</span></div>
+        <h3>Neuroimaging methods</h3>
+        <p>Functional and structural MRI, voxel-based and multivariate analysis, ICA and
+          co-activation pattern approaches, and the measurement questions underneath them — what
+          the signal is, and what perturbs it.</p>
+        <div class="keys"><span class="k">rs-fMRI</span><span class="k">VBM</span><span class="k">ICA / CAP</span></div>
+      </article>
+      <article class="area" id="area-ADD">
+        <div class="area-code"><span class="sq" style="background:var(--hot)"></span><span class="mono">ADD</span></div>
+        <h3>Addiction, reward &amp; compulsivity</h3>
+        <p>Substance use, internet gaming and obsessive–compulsive presentations, and the
+          neuromodulation of social reward. Which striatal–prefrontal alterations are common across
+          addictions, and which are specific to a substance or a behaviour.</p>
+        <div class="keys"><span class="k">SUD</span><span class="k">IGD</span><span class="k">oxytocin</span></div>
+      </article>
+      <article class="area" id="area-MLX">
+        <div class="area-code"><span class="sq" style="background:var(--cold)"></span><span class="mono">MLX</span></div>
+        <h3>Machine learning &amp; data science</h3>
+        <p>Deep and classical learning on neuroimaging data, multi-site classification, and
+          explainable models — with the emphasis on biomarkers that generalise across sites rather
+          than accuracies that impress on one.</p>
+        <div class="keys"><span class="k">classification</span><span class="k">multi-site</span><span class="k">XAI</span></div>
+      </article>
+      <article class="area" id="area-SYN">
+        <div class="area-code"><span class="sq" style="background:var(--peak)"></span><span class="mono">SYN</span></div>
+        <h3>Evidence synthesis</h3>
+        <p>Coordinate-based meta-analysis, ALE and kernel-density approaches, network meta-analysis
+          and large-scale dataset integration — recovering the signal that individual underpowered
+          studies cannot.</p>
+        <div class="keys"><span class="k">ALE</span><span class="k">CBMA</span><span class="k">meta-analysis</span></div>
+      </article>
+      <article class="area" id="area-TLS">
+        <div class="area-code"><span class="sq" style="background:var(--cold)"></span><span class="mono">TLS</span></div>
+        <h3>Software &amp; translational neuroinformatics</h3>
+        <p>Hub-analysis tools such as MQGA and MIEHS, reproducible analysis frameworks, and
+          interactive applications for neuroimaging and behavioural assessment. Software that puts
+          these methods in the hands of clinical and research users. Open to collaboration here.</p>
+        <div class="keys"><span class="k">MQGA</span><span class="k">MIEHS</span><span class="k">open tools</span></div>
+      </article>
+    </div>
+  </section>
+
+  <hr class="hr" />
+
+  <section id="publications">
+    <div class="shead up">
+      <h2>Publications</h2><span class="mono">Selected · 80+ total</span>
+      <a class="mono spill" href="https://scholar.google.com/citations?user=fvYLHCgAAAAJ">Full record on Scholar ↗</a>
+    </div>
+    <div class="filt up" id="filt">
+      <button aria-pressed="true"  data-f="all">All</button>
+      <button aria-pressed="false" data-f="meta">Meta-analysis</button>
+      <button aria-pressed="false" data-f="emp">Empirical</button>
+      <button aria-pressed="false" data-f="meth">Methods &amp; tools</button>
+      <button aria-pressed="false" data-f="ml">Machine learning</button>
+      <button aria-pressed="false" data-f="pre">Preprint</button>
+      <span class="count" id="count"></span>
+    </div>
+    <ul class="pubs up" id="pubs">
+      <li class="pub" data-type="emp">
+        <button class="prow" aria-expanded="false">
+          <span class="pyear">2026</span>
+          <span class="pmain">
+            <span class="ptitle">Dynamic brain connectivity patterns induced by oxytocin: an fMRI co-activation pattern analysis study</span>
+            <span class="pauth"><b>Klugah-Brown, B.</b>, Li, Y., Wu, H., Yang, Z., Hagan, A. T., Agoalikum, E., Wang, P., Biswal, B. B.</span>
+            <span class="pven"><em>Empirical</em> · Molecular Psychiatry, 31(8), 4310–4322</span>
+          </span>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="pbody"><div><div class="pin">
+          <p>Co-activation pattern analysis of how oxytocin reshapes the temporal dynamics of large-scale connectivity, moving beyond static contrasts to the transitions between brain states.</p>
+          <div class="acts">
+            <a class="mini" href="https://scholar.google.com/citations?user=fvYLHCgAAAAJ">Scholar</a>
+            <button class="mini cite">Copy BibTeX</button>
+          </div>
+          <pre class="bib">@article{klugah2026dynamic,
+  title   = {Dynamic brain connectivity patterns induced by oxytocin: An fMRI Co-Activation pattern analysis study},
+  author  = {Klugah-Brown, Benjamin and Li, Yuan and Wu, Hao and Yang, Zhenzhen and Hagan, Abraham Tonny and Agoalikum, Elijah and Wang, Pan and Biswal, Bharat B},
+  journal = {Molecular Psychiatry},
+  volume  = {31}, number = {8}, pages = {4310--4322},
+  year    = {2026},
+  publisher = {Nature Publishing Group UK London}
+}</pre>
+        </div></div></div>
+      </li>
+      <li class="pub" data-type="meth">
+        <button class="prow" aria-expanded="false">
+          <span class="pyear">2026</span>
+          <span class="pmain">
+            <span class="ptitle">Multi-Indicator Entropy Hub Score: a quantitative approach to hub analysis in brain networks</span>
+            <span class="pauth">Wu, H., Xiao, J., Agoalikum, E., Baig, T. I., Becker, B., Ferraro, S., Biswal, B. B., <b>Klugah-Brown, B.</b>, Maes, M.</span>
+            <span class="pven"><em>Methods</em> · NeuroImage, 121799</span>
+          </span>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="pbody"><div><div class="pin">
+          <p>MIEHS combines several graph indicators into a single entropy-based hub score, so that hub identification no longer depends on which centrality measure you happen to pick.</p>
+          <div class="acts">
+            <a class="mini" href="https://scholar.google.com/citations?user=fvYLHCgAAAAJ">Scholar</a>
+            <button class="mini cite">Copy BibTeX</button>
+          </div>
+          <pre class="bib">@article{wu2026multi,
+  title   = {Multi-Indicator Entropy Hub Score: A quantitative approach to hub analysis in brain networks},
+  author  = {Wu, Hongzhou and Xiao, Jinming and Agoalikum, Elijah and Baig, Talha Imtiaz and Becker, Benjamin and Ferraro, Stefania and Biswal, Bharat B and Klugah-Brown, Benjamin and Maes, Michael},
+  journal = {NeuroImage},
+  pages   = {121799},
+  year    = {2026},
+  publisher = {Academic Press}
+}</pre>
+        </div></div></div>
+      </li>
+      <li class="pub" data-type="ml">
+        <button class="prow" aria-expanded="false">
+          <span class="pyear">2026</span>
+          <span class="pmain">
+            <span class="ptitle">Machine-learning classification of children and adolescents with ASD using resting-state frequency-specific intrinsic activity</span>
+            <span class="pauth">Huang, Q., Jiang, S., Luo, C., Yao, D., Biswal, B. B., <b>Klugah-Brown, B.</b></span>
+            <span class="pven"><em>Machine learning</em> · Frontiers in Neuroscience, 20, 1892288</span>
+          </span>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="pbody"><div><div class="pin">
+          <p>Frequency-specific intrinsic activity as the feature space for classifying autism spectrum disorder in a developmental sample.</p>
+          <div class="acts">
+            <a class="mini" href="https://scholar.google.com/citations?user=fvYLHCgAAAAJ">Scholar</a>
+            <button class="mini cite">Copy BibTeX</button>
+          </div>
+          <pre class="bib">@article{huang2026machine,
+  title   = {Machine-learning classification of children and adolescents with ASD using resting-state frequency-specific intrinsic activity},
+  author  = {Huang, Qi and Jiang, Sisi and Luo, Cheng and Yao, Dezhong and Biswal, Bharat B and Klugah-Brown, Benjamin},
+  journal = {Frontiers in Neuroscience},
+  volume  = {20}, pages = {1892288},
+  year    = {2026},
+  publisher = {Frontiers Media SA}
+}</pre>
+        </div></div></div>
+      </li>
+      <li class="pub" data-type="ml">
+        <button class="prow" aria-expanded="false">
+          <span class="pyear">2026</span>
+          <span class="pmain">
+            <span class="ptitle">Multi-site classification of autism spectrum disorder using spatially constrained ICA on resting-state fMRI networks</span>
+            <span class="pauth">Baig, T. I., Jing, J., Hu, P., Niu, B., Yang, Z., Biswal, B. B., <b>Klugah-Brown, B.</b></span>
+            <span class="pven"><em>Machine learning</em> · Brain Sciences, 16(2), 181</span>
+          </span>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="pbody"><div><div class="pin">
+          <p>Spatially constrained ICA applied across sites, addressing the generalisation problem that multi-site neuroimaging classification usually runs into.</p>
+          <div class="acts">
+            <a class="mini" href="https://scholar.google.com/citations?user=fvYLHCgAAAAJ">Scholar</a>
+            <button class="mini cite">Copy BibTeX</button>
+          </div>
+          <pre class="bib">@article{baig2026multi,
+  title   = {Multi-site classification of autism spectrum disorder using spatially constrained ICA on resting-state fMRI networks},
+  author  = {Baig, Talha Imtiaz and Jing, Junlin and Hu, Peng and Niu, Bochao and Yang, Zhenzhen and Biswal, Bharat B and Klugah-Brown, Benjamin},
+  journal = {Brain Sciences},
+  volume  = {16}, number = {2}, pages = {181},
+  year    = {2026},
+  publisher = {MDPI}
+}</pre>
+        </div></div></div>
+      </li>
+      <li class="pub" data-type="emp">
+        <button class="prow" aria-expanded="false">
+          <span class="pyear">2026</span>
+          <span class="pmain">
+            <span class="ptitle">Exploring the impact of dance training on the structural plasticity of empathy-related brain networks</span>
+            <span class="pauth">Li, G., He, H., Yu, Y., Liu, Y., Bringas Vega, M. L., <b>Klugah-Brown, B.</b>, Pollick, F., Lu, J., Quan, L., Yin, L., et al.</span>
+            <span class="pven"><em>Empirical</em> · Neural Plasticity, 2026(1), 2899142</span>
+          </span>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="pbody"><div><div class="pin">
+          <p>Long-term dance training as a natural experiment in structural plasticity, focused on the networks supporting empathy.</p>
+          <div class="acts">
+            <a class="mini" href="https://scholar.google.com/citations?user=fvYLHCgAAAAJ">Scholar</a>
+            <button class="mini cite">Copy BibTeX</button>
+          </div>
+          <pre class="bib">@article{li2026exploring,
+  title   = {Exploring the Impact of Dance Training on the Structural Plasticity of Empathy-Related Brain Networks},
+  author  = {Li, Gujing and He, Hui and Yu, Yuanyuan and Liu, Yayun and Bringas Vega, Mar{\&#x27;\i}a Luisa and Klugah-Brown, Benjamin and Pollick, Frank and Lu, Jing and Quan, Ling and Yin, Lixue and others},
+  journal = {Neural Plasticity},
+  volume  = {2026}, number = {1}, pages = {2899142},
+  year    = {2026},
+  publisher = {Wiley}
+}</pre>
+        </div></div></div>
+      </li>
+      <li class="pub" data-type="emp">
+        <button class="prow" aria-expanded="false">
+          <span class="pyear">2025</span>
+          <span class="pmain">
+            <span class="ptitle">Brain structural differences in cocaine use disorder: insights from multivariate and neurotransmitter analyses</span>
+            <span class="pauth">Yang, Z., <b>Klugah-Brown, B.</b>, Ding, G., Zhou, W., Biswal, B. B.</span>
+            <span class="pven"><em>Empirical</em> · Progress in Neuro-Psychopharmacology &amp; Biological Psychiatry, 136, 111159</span>
+          </span>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="pbody"><div><div class="pin">
+          <p>Structural differences in cocaine use disorder examined multivariately and mapped onto neurotransmitter receptor distributions, linking morphometry to chemical architecture.</p>
+          <div class="acts">
+            <a class="mini" href="https://doi.org/10.1016/j.pnpbp.2024.111159">DOI</a>
+            <button class="mini cite">Copy BibTeX</button>
+          </div>
+          <pre class="bib">@article{yang2025brain,
+  title   = {Brain structural differences in cocaine use disorder: Insights from multivariate and neurotransmitter analyses},
+  author  = {Yang, Zhenzhen and Klugah-Brown, Benjamin and Ding, Guobin and Zhou, Wenchao and Biswal, Bharat B},
+  journal = {Progress in Neuro-Psychopharmacology and Biological Psychiatry},
+  volume  = {136}, pages = {111159},
+  year    = {2025},
+  publisher = {Elsevier}
+}</pre>
+        </div></div></div>
+      </li>
+      <li class="pub" data-type="pre">
+        <button class="prow" aria-expanded="false">
+          <span class="pyear">2025</span>
+          <span class="pmain">
+            <span class="ptitle">MIEHS: a quantitative approach to hub property analysis in brain networks</span>
+            <span class="pauth">Wu, H., Xiao, J., Agoalikum, E., Becker, B., Ferraro, S., Biswal, B. B., <b>Klugah-Brown, B.</b>, Maes, M.</span>
+            <span class="pven"><em>Preprint</em> · medRxiv, 2025.05 · preprint</span>
+          </span>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="pbody"><div><div class="pin">
+          <p>Preprint version of the MIEHS hub-scoring method, later published in NeuroImage.</p>
+          <div class="acts">
+            <a class="mini" href="https://www.medrxiv.org/">medRxiv</a>
+            <button class="mini cite">Copy BibTeX</button>
+          </div>
+          <pre class="bib">@article{wu2025miehs,
+  title   = {MIEHS: A Quantitative Approach to Hub Property Analysis in Brain Networks},
+  author  = {Wu, Hongzhou and Xiao, Jinming and Agoalikum, Elijah and Becker, Benjamin and Ferraro, Stefania and Biswal, Bharat B and Klugah-Brown, Benjamin and Maes, Michael},
+  journal = {medRxiv},
+  pages   = {2025--05},
+  year    = {2025},
+  publisher = {Cold Spring Harbor Laboratory Press}
+}</pre>
+        </div></div></div>
+      </li>
+      <li class="pub" data-type="meth">
+        <button class="prow" aria-expanded="false">
+          <span class="pyear">2024</span>
+          <span class="pmain">
+            <span class="ptitle">MQGA: a quantitative analysis of brain network hubs using multi-graph theoretical indices</span>
+            <span class="pauth">Wu, H., Yang, Z., Cao, Q., Wang, P., Biswal, B. B., <b>Klugah-Brown, B.</b></span>
+            <span class="pven"><em>Methods</em> · NeuroImage, 303, 120913</span>
+          </span>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="pbody"><div><div class="pin">
+          <p>MQGA integrates multiple graph-theoretical indices into one framework for identifying network hubs, rather than relying on any single centrality measure.</p>
+          <div class="acts">
+            <a class="mini" href="https://scholar.google.com/citations?user=fvYLHCgAAAAJ">Scholar</a>
+            <button class="mini cite">Copy BibTeX</button>
+          </div>
+          <pre class="bib">@article{wu2024mqga,
+  title   = {MQGA: A quantitative analysis of brain network hubs using multi-graph theoretical indices},
+  author  = {Wu, Hongzhou and Yang, Zhenzhen and Cao, Qingquan and Wang, Pan and Biswal, Bharat B and Klugah-Brown, Benjamin},
+  journal = {NeuroImage},
+  volume  = {303}, pages = {120913},
+  year    = {2024},
+  publisher = {Academic Press}
+}</pre>
+        </div></div></div>
+      </li>
+      <li class="pub" data-type="meta">
+        <button class="prow" aria-expanded="false">
+          <span class="pyear">2024</span>
+          <span class="pmain">
+            <span class="ptitle">The neurostructural consequences of glaucoma and their overlap with disorders exhibiting emotional dysregulations: a voxel-based meta-analysis and tripartite system model</span>
+            <span class="pauth"><b>Klugah-Brown, B.</b>, Bore, M. C., Liu, X., Gan, X., Biswal, B. B., Kendrick, K. M., Chang, D. H. F., Zhou, B., Becker, B.</span>
+            <span class="pven"><em>Meta-analysis</em> · Journal of Affective Disorders, 358, 487–499</span>
+          </span>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="pbody"><div><div class="pin">
+          <p>Voxel-based meta-analysis showing that the structural signature of glaucoma extends past the visual system and overlaps with disorders of emotional dysregulation, framed by a tripartite system model.</p>
+          <div class="acts">
+            <a class="mini" href="https://scholar.google.com/citations?user=fvYLHCgAAAAJ">Scholar</a>
+            <button class="mini cite">Copy BibTeX</button>
+          </div>
+          <pre class="bib">@article{klugah2024neurostructural,
+  title   = {The neurostructural consequences of glaucoma and their overlap with disorders exhibiting emotional dysregulations: A voxel-based meta-analysis and tripartite system model},
+  author  = {Klugah-Brown, Benjamin and Bore, Mercy C and Liu, Xiqin and Gan, Xianyang and Biswal, Bharat B and Kendrick, Keith M and Chang, Dorita HF and Zhou, Bo and Becker, Benjamin},
+  journal = {Journal of Affective Disorders},
+  volume  = {358}, pages = {487--499},
+  year    = {2024},
+  publisher = {Elsevier}
+}</pre>
+        </div></div></div>
+      </li>
+      <li class="pub" data-type="meta">
+        <button class="prow" aria-expanded="false">
+          <span class="pyear">2024</span>
+          <span class="pmain">
+            <span class="ptitle">Common and separable neural alterations in adult and adolescent depression — evidence from neuroimaging meta-analyses</span>
+            <span class="pauth">Bore, M. C., Liu, X., Huang, X., Kendrick, K. M., Zhou, B., Zhang, J., <b>Klugah-Brown, B.</b>, Becker, B.</span>
+            <span class="pven"><em>Meta-analysis</em> · Neuroscience &amp; Biobehavioral Reviews, 164, 105835</span>
+          </span>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="pbody"><div><div class="pin">
+          <p>Meta-analytic separation of the neural alterations shared between adult and adolescent depression from those specific to each developmental stage.</p>
+          <div class="acts">
+            <a class="mini" href="https://scholar.google.com/citations?user=fvYLHCgAAAAJ">Scholar</a>
+            <button class="mini cite">Copy BibTeX</button>
+          </div>
+          <pre class="bib">@article{bore2024common,
+  title   = {Common and separable neural alterations in adult and adolescent depression--evidence from neuroimaging meta-analyses},
+  author  = {Bore, Mercy Chepngetich and Liu, Xiqin and Huang, Xiaoqi and Kendrick, Keith M and Zhou, Bo and Zhang, Jie and Klugah-Brown, Benjamin and Becker, Benjamin},
+  journal = {Neuroscience \&amp; Biobehavioral Reviews},
+  volume  = {164}, pages = {105835},
+  year    = {2024},
+  publisher = {Pergamon}
+}</pre>
+        </div></div></div>
+      </li>
+      <li class="pub" data-type="meta">
+        <button class="prow" aria-expanded="false">
+          <span class="pyear">2024</span>
+          <span class="pmain">
+            <span class="ptitle">Distinct neurofunctional alterations during motivational and hedonic processing of natural and monetary rewards in depression — a neuroimaging meta-analysis</span>
+            <span class="pauth">Bore, M. C., Liu, X., Gan, X., Wang, L., Xu, T., Ferraro, S., Li, L., Zhou, B., Zhang, J., Vatansever, D., et al.</span>
+            <span class="pven"><em>Meta-analysis</em> · Psychological Medicine, 54(4), 639–651</span>
+          </span>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="pbody"><div><div class="pin">
+          <p>Meta-analysis dissociating wanting from liking in depression, and natural from monetary rewards — a distinction that matters for which reward deficits are treatable.</p>
+          <div class="acts">
+            <a class="mini" href="https://scholar.google.com/citations?user=fvYLHCgAAAAJ">Scholar</a>
+            <button class="mini cite">Copy BibTeX</button>
+          </div>
+          <pre class="bib">@article{bore2024distinct,
+  title   = {Distinct neurofunctional alterations during motivational and hedonic processing of natural and monetary rewards in depression--a neuroimaging meta-analysis},
+  author  = {Bore, Mercy Chepngetich and Liu, Xiqin and Gan, Xianyang and Wang, Lan and Xu, Ting and Ferraro, Stefania and Li, Liyuan and Zhou, Bo and Zhang, Jie and Vatansever, Deniz and others},
+  journal = {Psychological Medicine},
+  volume  = {54}, number = {4}, pages = {639--651},
+  year    = {2024},
+  publisher = {Cambridge University Press}
+}</pre>
+        </div></div></div>
+      </li>
+      <li class="pub" data-type="meth">
+        <button class="prow" aria-expanded="false">
+          <span class="pyear">2023</span>
+          <span class="pmain">
+            <span class="ptitle">Structural–functional connectivity mapping of the insular cortex: a combined data-driven and meta-analytic topic mapping</span>
+            <span class="pauth"><b>Klugah-Brown, B.</b>, Wang, P., Jiang, Y., Becker, B., Hu, P., Uddin, L. Q., Biswal, B.</span>
+            <span class="pven"><em>Methods</em> · Cerebral Cortex, 33(5), 1726–1738</span>
+          </span>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="pbody"><div><div class="pin">
+          <p>A combined data-driven and meta-analytic parcellation of the insula, mapping structural and functional connectivity onto topic-level functional descriptions of a region central to salience and addiction.</p>
+          <div class="acts">
+            <a class="mini" href="https://scholar.google.com/citations?user=fvYLHCgAAAAJ">Scholar</a>
+            <button class="mini cite">Copy BibTeX</button>
+          </div>
+          <pre class="bib">@article{klugah2023structural,
+  title   = {Structural--functional connectivity mapping of the insular cortex: a combined data-driven and meta-analytic topic mapping},
+  author  = {Klugah-Brown, Benjamin and Wang, Pan and Jiang, Yuan and Becker, Benjamin and Hu, Peng and Uddin, Lucina Q and Biswal, Bharat},
+  journal = {Cerebral Cortex},
+  volume  = {33}, number = {5}, pages = {1726--1738},
+  year    = {2023},
+  publisher = {Oxford University Press}
+}</pre>
+        </div></div></div>
+      </li>
+      <li class="pub" data-type="emp">
+        <button class="prow" aria-expanded="false">
+          <span class="pyear">2023</span>
+          <span class="pmain">
+            <span class="ptitle">Structural and functional network analysis of twins using fMRI data</span>
+            <span class="pauth">Yao, X., <b>Klugah-Brown, B.</b>, Yang, H., Biswal, B.</span>
+            <span class="pven"><em>Empirical</em> · Cerebral Cortex, 33(22), 11060–11069</span>
+          </span>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="pbody"><div><div class="pin">
+          <p>Twin data used to ask how much of structural and functional network organisation is shared, and where individual variation asserts itself.</p>
+          <div class="acts">
+            <a class="mini" href="https://scholar.google.com/citations?user=fvYLHCgAAAAJ">Scholar</a>
+            <button class="mini cite">Copy BibTeX</button>
+          </div>
+          <pre class="bib">@article{yao2023structural,
+  title   = {Structural and functional network analysis of twins using fMRI data},
+  author  = {Yao, Xing and Klugah-Brown, Benjamin and Yang, Hang and Biswal, Bharat},
+  journal = {Cerebral Cortex},
+  volume  = {33}, number = {22}, pages = {11060--11069},
+  year    = {2023},
+  publisher = {Oxford University Press}
+}</pre>
+        </div></div></div>
+      </li>
+      <li class="pub" data-type="meth">
+        <button class="prow" aria-expanded="false">
+          <span class="pyear">2023</span>
+          <span class="pmain">
+            <span class="ptitle">Comparative analysis of GIG-ICA and IVA-GL for assessing brain functional network characteristics in autism spectrum disorder</span>
+            <span class="pauth">Jing, J., <b>Klugah-Brown, B.</b>, Xia, S., Sheng, M., Biswal, B. B.</span>
+            <span class="pven"><em>Methods</em> · Frontiers in Neuroscience, 17, 1252732</span>
+          </span>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="pbody"><div><div class="pin">
+          <p>Head-to-head comparison of two methods for estimating subject-specific independent components, testing which better preserves inter-subject variability in ASD.</p>
+          <div class="acts">
+            <a class="mini" href="https://scholar.google.com/citations?user=fvYLHCgAAAAJ">Scholar</a>
+            <button class="mini cite">Copy BibTeX</button>
+          </div>
+          <pre class="bib">@article{jing2023comparative,
+  title   = {Comparative Analysis of Group Information-Guided Independent Component Analysis (GIG-ICA) and Independent Vector Analysis (IVA-GL) for Assessing Brain functional Network Characteristics in Autism Spectrum Disorder (ASD)},
+  author  = {Jing, Junlin and Klugah-Brown, Benjamin and Xia, Shiyu and Sheng, Min and Biswal, Bharat B},
+  journal = {Frontiers in Neuroscience},
+  volume  = {17}, pages = {1252732},
+  year    = {2023},
+  publisher = {Frontiers}
+}</pre>
+        </div></div></div>
+      </li>
+      <li class="pub" data-type="meth">
+        <button class="prow" aria-expanded="false">
+          <span class="pyear">2022</span>
+          <span class="pmain">
+            <span class="ptitle">Effect of surgical mask on fMRI signals during task and rest</span>
+            <span class="pauth"><b>Klugah-Brown, B.</b>, Yu, Y., Hu, P., Agoalikum, E., Liu, C., Liu, X., Yang, X., Zeng, Y., Zhou, X., Yu, X., et al.</span>
+            <span class="pven"><em>Methods</em> · Communications Biology, 5(1), 1004</span>
+          </span>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="pbody"><div><div class="pin">
+          <p>A measurement study of how wearing a surgical mask alters fMRI signal during task and rest — a practical confound for any scanning done under masking protocols.</p>
+          <div class="acts">
+            <a class="mini" href="https://scholar.google.com/citations?user=fvYLHCgAAAAJ">Scholar</a>
+            <button class="mini cite">Copy BibTeX</button>
+          </div>
+          <pre class="bib">@article{klugah2022effect,
+  title   = {Effect of surgical mask on fMRI signals during task and rest},
+  author  = {Klugah-Brown, Benjamin and Yu, Yue and Hu, Peng and Agoalikum, Elijah and Liu, Congcong and Liu, Xiqin and Yang, Xi and Zeng, Yixu and Zhou, Xinqi and Yu, Xin and others},
+  journal = {Communications Biology},
+  volume  = {5}, number = {1}, pages = {1004},
+  year    = {2022},
+  publisher = {Nature Publishing Group UK London}
+}</pre>
+        </div></div></div>
+      </li>
+      <li class="pub" data-type="emp">
+        <button class="prow" aria-expanded="false">
+          <span class="pyear">2022</span>
+          <span class="pmain">
+            <span class="ptitle">Associations between levels of Internet Gaming Disorder symptoms and striatal morphology — replication and associations with social anxiety</span>
+            <span class="pauth"><b>Klugah-Brown, B.</b>, Zhou, X., Wang, L., Gan, X., Zhang, R., Liu, X., Song, X., Zhao, W., Biswal, B. B., Yu, F., et al.</span>
+            <span class="pven"><em>Empirical</em> · Psychoradiology, 2(4), 207–215</span>
+          </span>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="pbody"><div><div class="pin">
+          <p>A replication study relating internet gaming disorder symptom levels to striatal structure, with social anxiety as a modifying factor.</p>
+          <div class="acts">
+            <a class="mini" href="https://scholar.google.com/citations?user=fvYLHCgAAAAJ">Scholar</a>
+            <button class="mini cite">Copy BibTeX</button>
+          </div>
+          <pre class="bib">@article{klugah2022associations,
+  title   = {Associations between levels of Internet Gaming Disorder symptoms and striatal morphology--replication and associations with social anxiety},
+  author  = {Klugah-Brown, Benjamin and Zhou, Xinqi and Wang, Lan and Gan, Xianyang and Zhang, Ran and Liu, Xiqin and Song, Xinwei and Zhao, Weihua and Biswal, Bharat B and Yu, Fangwen and others},
+  journal = {Psychoradiology},
+  volume  = {2}, number = {4}, pages = {207--215},
+  year    = {2022},
+  publisher = {Oxford University Press}
+}</pre>
+        </div></div></div>
+      </li>
+      <li class="pub" data-type="meta">
+        <button class="prow" aria-expanded="false">
+          <span class="pyear">2022</span>
+          <span class="pmain">
+            <span class="ptitle">Common and distinct neurofunctional representations of core and social disgust in the brain: coordinate-based and network meta-analyses</span>
+            <span class="pauth">Gan, X., Zhou, X., Li, J., Jiao, G., Jiang, X., Biswal, B., Yao, S., <b>Klugah-Brown, B.</b>, Becker, B.</span>
+            <span class="pven"><em>Meta-analysis</em> · Neuroscience &amp; Biobehavioral Reviews, 135, 104553</span>
+          </span>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="pbody"><div><div class="pin">
+          <p>Coordinate-based and network meta-analyses separating core disgust from social disgust, testing whether one emotion or two.</p>
+          <div class="acts">
+            <a class="mini" href="https://scholar.google.com/citations?user=fvYLHCgAAAAJ">Scholar</a>
+            <button class="mini cite">Copy BibTeX</button>
+          </div>
+          <pre class="bib">@article{gan2022common,
+  title   = {Common and distinct neurofunctional representations of core and social disgust in the brain: Coordinate-based and network meta-analyses},
+  author  = {Gan, Xianyang and Zhou, Xinqi and Li, Jialin and Jiao, Guojuan and Jiang, Xi and Biswal, Bharat and Yao, Shuxia and Klugah-Brown, Benjamin and Becker, Benjamin},
+  journal = {Neuroscience \&amp; Biobehavioral Reviews},
+  volume  = {135}, pages = {104553},
+  year    = {2022},
+  publisher = {Pergamon}
+}</pre>
+        </div></div></div>
+      </li>
+      <li class="pub" data-type="meta">
+        <button class="prow" aria-expanded="false">
+          <span class="pyear">2021</span>
+          <span class="pmain">
+            <span class="ptitle">Common abnormality of gray matter integrity in substance use disorder and obsessive-compulsive disorder: a comparative voxel-based meta-analysis</span>
+            <span class="pauth"><b>Klugah-Brown, B.</b>, Jiang, C., Agoalikum, E., Zhou, X., Zou, L., Yu, Q., Becker, B., Biswal, B.</span>
+            <span class="pven"><em>Meta-analysis</em> · Human Brain Mapping, 42(12), 3871–3886</span>
+          </span>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="pbody"><div><div class="pin">
+          <p>Comparative voxel-based meta-analysis contrasting grey matter alterations in substance use disorder against obsessive-compulsive disorder, separating what the two share from what is unique to each.</p>
+          <div class="acts">
+            <a class="mini" href="https://scholar.google.com/citations?user=fvYLHCgAAAAJ">Scholar</a>
+            <button class="mini cite">Copy BibTeX</button>
+          </div>
+          <pre class="bib">@article{klugah2021common,
+  title   = {Common abnormality of gray matter integrity in substance use disorder and obsessive-compulsive disorder: A comparative voxel-based meta-analysis},
+  author  = {Klugah-Brown, Benjamin and Jiang, Chenyang and Agoalikum, Elijah and Zhou, Xinqi and Zou, Liye and Yu, Qian and Becker, Benjamin and Biswal, Bharat},
+  journal = {Human Brain Mapping},
+  volume  = {42}, number = {12}, pages = {3871--3886},
+  year    = {2021},
+  publisher = {John Wiley \&amp; Sons}
+}</pre>
+        </div></div></div>
+      </li>
+      <li class="pub" data-type="meta">
+        <button class="prow" aria-expanded="false">
+          <span class="pyear">2021</span>
+          <span class="pmain">
+            <span class="ptitle">Common neurofunctional dysregulations characterize obsessive–compulsive, substance use and gaming disorders — an activation likelihood meta-analysis of functional imaging studies</span>
+            <span class="pauth"><b>Klugah-Brown, B.</b>, Zhou, X., Pradhan, B. K., Zweerings, J., Mathiak, K., Biswal, B., Becker, B.</span>
+            <span class="pven"><em>Meta-analysis</em> · Addiction Biology, 26, e12997</span>
+          </span>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="pbody"><div><div class="pin">
+          <p>Activation likelihood estimation across obsessive–compulsive, substance use and gaming disorders, testing whether behavioural and substance addictions converge on shared dysregulation.</p>
+          <div class="acts">
+            <a class="mini" href="https://doi.org/10.1111/adb.12997">DOI</a>
+            <button class="mini cite">Copy BibTeX</button>
+          </div>
+          <pre class="bib">@article{klugah2021commonneuro,
+  title   = {Common neurofunctional dysregulations characterize obsessive--compulsive, substance use, and gaming disorders---An activation likelihood meta-analysis of functional imaging studies},
+  author  = {Klugah-Brown, Benjamin and Zhou, Xinqi and Pradhan, Basant K and Zweerings, Jana and Mathiak, Klaus and Biswal, Bharat and Becker, Benjamin},
+  journal = {Addiction Biology},
+  volume  = {26}, pages = {e12997},
+  year    = {2021},
+  doi     = {10.1111/adb.12997}
+}</pre>
+        </div></div></div>
+      </li>
+      <li class="pub" data-type="meta">
+        <button class="prow" aria-expanded="false">
+          <span class="pyear">2020</span>
+          <span class="pmain">
+            <span class="ptitle">Common and separable neural alterations in substance use disorders: a coordinate-based meta-analysis of functional neuroimaging studies in humans</span>
+            <span class="pauth"><b>Klugah-Brown, B.</b>, Di, X., Zweerings, J., Mathiak, K., Becker, B., Biswal, B.</span>
+            <span class="pven"><em>Meta-analysis</em> · Human Brain Mapping, 41(16), 4459–4477</span>
+          </span>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="pbody"><div><div class="pin">
+          <p>Coordinate-based meta-analysis distinguishing alterations common to addiction in general from those separable by substance class. Widely cited in subsequent addiction network work.</p>
+          <div class="acts">
+            <a class="mini" href="https://doi.org/10.1002/hbm.25085">DOI</a>
+            <button class="mini cite">Copy BibTeX</button>
+          </div>
+          <pre class="bib">@article{klugah2020common,
+  title   = {Common and separable neural alterations in substance use disorders: A coordinate-based meta-analyses of functional neuroimaging studies in humans},
+  author  = {Klugah-Brown, Benjamin and Di, Xin and Zweerings, Jana and Mathiak, Klaus and Becker, Benjamin and Biswal, Bharat},
+  journal = {Human Brain Mapping},
+  volume  = {41}, number = {16}, pages = {4459--4477},
+  year    = {2020},
+  doi     = {10.1002/hbm.25085}
+}</pre>
+        </div></div></div>
+      </li>
+      <li class="pub" data-type="emp">
+        <button class="prow" aria-expanded="false">
+          <span class="pyear">2019</span>
+          <span class="pmain">
+            <span class="ptitle">Altered structural and causal connectivity in frontal lobe epilepsy</span>
+            <span class="pauth"><b>Klugah-Brown, B.</b>, Luo, C., Peng, R., He, H., Li, J., Dong, L., Yao, D.</span>
+            <span class="pven"><em>Empirical</em> · BMC Neurology, 19, 70</span>
+          </span>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="pbody"><div><div class="pin">
+          <p>Structural and causal connectivity alterations in frontal lobe epilepsy, combining morphometry with effective connectivity to characterise how the epileptogenic network departs from typical organisation.</p>
+          <div class="acts">
+            <a class="mini" href="https://doi.org/10.1186/s12883-019-1300-z">DOI</a>
+            <a class="mini" href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6485093/">PMC</a>
+            <button class="mini cite">Copy BibTeX</button>
+          </div>
+          <pre class="bib">@article{benjamin2019altered,
+  title   = {Altered structural and causal connectivity in frontal lobe epilepsy},
+  author  = {Klugah-Brown, Benjamin and Luo, Cheng and Peng, Rui and He, Hui and Li, Jianfu and Dong, Li and Yao, Dezhong},
+  journal = {BMC Neurology},
+  volume  = {19}, pages = {70},
+  year    = {2019},
+  publisher = {Springer Nature},
+  doi     = {10.1186/s12883-019-1300-z}
+}</pre>
+        </div></div></div>
+      </li>
+      <li class="pub" data-type="emp">
+        <button class="prow" aria-expanded="false">
+          <span class="pyear">2018</span>
+          <span class="pmain">
+            <span class="ptitle">Altered dynamic functional network connectivity in frontal lobe epilepsy</span>
+            <span class="pauth"><b>Klugah-Brown, B.</b>, Luo, C., He, H., Jiang, S., Armah, G. K., Wu, Y., Li, J., Yin, W., Yao, D.</span>
+            <span class="pven"><em>Empirical</em> · Brain Topography, 32(3), 394–404</span>
+          </span>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="pbody"><div><div class="pin">
+          <p>Time-varying functional network connectivity in frontal lobe epilepsy, showing that connectivity states and their transitions carry information that static averages discard.</p>
+          <div class="acts">
+            <a class="mini" href="https://doi.org/10.1007/s10548-018-0678-z">DOI</a>
+            <button class="mini cite">Copy BibTeX</button>
+          </div>
+          <pre class="bib">@article{benjamin2018altered,
+  title   = {Altered dynamic functional network connectivity in frontal lobe epilepsy},
+  author  = {Klugah-Brown, Benjamin and Luo, Cheng and He, Hui and Jiang, Sisi and Armah, Gabriel Kofi and Wu, Yu and Li, Jianfu and Yin, Wenjie and Yao, Dezhong},
+  journal = {Brain Topography},
+  volume  = {32}, number = {3}, pages = {394--404},
+  year    = {2018},
+  doi     = {10.1007/s10548-018-0678-z}
+}</pre>
+        </div></div></div>
+      </li>
+    </ul>
+  </section>
+
+  <hr class="hr" />
+
+  <section id="software">
+    <div class="shead up">
+      <h2>Software</h2><span class="mono">Tools &amp; code</span>
+      <a class="mono spill" href="https://github.com/bklugah?tab=repositories">All repositories ↗</a>
+    </div>
+    <div class="repos up" id="repos" data-gh="bklugah">
+      <div class="loading">Loading repositories from github.com/bklugah …</div>
+    </div>
+  </section>
+
+  <hr class="hr" />
+
+  <!-- ══ COLLABORATORS ══
+       To add someone: copy one .cocard block and change the initials,
+       name, affiliation, description and link. The tile colour is set
+       inline — cycle var(--hot), var(--cold), var(--peak). -->
+  <section id="collaborators">
+    <div class="shead up">
+      <h2>Collaborators</h2><span class="mono">Recurring co-authors</span>
+      <a class="mono spill" href="#contact">Open to collaboration ↓</a>
+    </div>
+    <div class="cogrid up">
+        <a class="cocard" href="https://share.google/C1HAfJYFNxEyhFIvm">
+          <span class="mgm" style="background:var(--hot)">BB</span>
+          <span class="cotext">
+            <b>Bharat B. Biswal <span class="ar">↗</span></b>
+            <span class="aff">New Jersey Inst. of Technology</span>
+            <span class="cofocus">Resting-state functional connectivity. Co-author across the group's network and meta-analytic work.</span>
+          </span>
+        </a>
+        <a class="cocard" href="https://share.google/7JBp1KX6uH3JGtt0O">
+          <span class="mgm" style="background:var(--cold)">BB</span>
+          <span class="cotext">
+            <b>Benjamin Becker <span class="ar">↗</span></b>
+            <span class="aff">University of Hong Kong</span>
+            <span class="cofocus">Affective and addiction neuroscience, and the neuropeptide modulation of social and emotional processing.</span>
+          </span>
+        </a>
+        <a class="cocard" href="https://share.google/kUPfX0coRO5ox2AjK">
+          <span class="mgm" style="background:var(--peak)">DY</span>
+          <span class="cotext">
+            <b>Dezhong Yao <span class="ar">↗</span></b>
+            <span class="aff">UESTC · Chengdu</span>
+            <span class="cofocus">EEG methodology and brain-inspired intelligence. Senior co-author on the frontal lobe epilepsy studies.</span>
+          </span>
+        </a>
+        <a class="cocard" href="https://share.google/fWdqQi0xN4D6pBu8J">
+          <span class="mgm" style="background:var(--hot)">CL</span>
+          <span class="cotext">
+            <b>Cheng Luo <span class="ar">↗</span></b>
+            <span class="aff">UESTC · Chengdu</span>
+            <span class="cofocus">Network connectivity in epilepsy and the dynamics of large-scale brain systems.</span>
+          </span>
+        </a>
+        <a class="cocard" href="https://share.google/ZKmukHwyIksCSlXiY">
+          <span class="mgm" style="background:var(--cold)">PV</span>
+          <span class="cotext">
+            <b>Pedro Antonio Valdés Sosa <span class="ar">↗</span></b>
+            <span class="aff">Cuban Neuroscience Center · UESTC</span>
+            <span class="cofocus">EEG source modelling and brain mapping. China–Cuba Joint Laboratory on Neurotechnology.</span>
+          </span>
+        </a>
+        <a class="cocard" href="https://share.google/HCsjYL1vdspC5xJ0s">
+          <span class="mgm" style="background:var(--peak)">MB</span>
+          <span class="cotext">
+            <b>María Luisa Bringas Vega <span class="ar">↗</span></b>
+            <span class="aff">UESTC · Cuban Neuroscience Center</span>
+            <span class="cofocus">Cognitive neuroscience and neurotechnology, and the China–Cuba joint laboratory programme.</span>
+          </span>
+        </a>
+        <a class="cocard" href="https://share.google/sktUPssYW0qzYPXtB">
+          <span class="mgm" style="background:var(--hot)">SF</span>
+          <span class="cotext">
+            <b>Stefania Ferraro <span class="ar">↗</span></b>
+            <span class="aff">UESTC · Chengdu</span>
+            <span class="cofocus">Clinical neuroimaging and network analysis. Co-author on the hub-scoring methods work.</span>
+          </span>
+        </a>
+        <a class="cocard" href="https://share.google/wiU2IO15OWQkFjZaA">
+          <span class="mgm" style="background:var(--cold)">LU</span>
+          <span class="cotext">
+            <b>Lucina Q. Uddin <span class="ar">↗</span></b>
+            <span class="aff">University of California, Los Angeles</span>
+            <span class="cofocus">Salience network organisation and dynamic connectivity. Co-author on the insular cortex mapping.</span>
+          </span>
+        </a>
+        <a class="cocard" href="https://share.google/KCtXQThfjfEFQOrgT">
+          <span class="mgm" style="background:var(--peak)">EA</span>
+          <span class="cotext">
+            <b>Elijah Agoalikum <span class="ar">↗</span></b>
+            <span class="aff">UESTC · Chengdu</span>
+            <span class="cofocus">Neuroimaging methods and hub-property analysis across several group projects.</span>
+          </span>
+        </a>
+        <a class="cocard" href="https://share.google/XLPsTMUiJ6fWddt6Y">
+          <span class="mgm" style="background:var(--hot)">SA</span>
+          <span class="cotext">
+            <b>Seth Kwadjo Angmorterh <span class="ar">↗</span></b>
+            <span class="aff">Univ. of Health &amp; Allied Sciences, Ghana</span>
+            <span class="cofocus">Diagnostic radiography and MRI optimisation. Head of the Department of Medical Imaging, Ho.</span>
+          </span>
+        </a>
+        <a class="cocard" href="https://share.google/9XIlaoGAPWJn11D4T">
+          <span class="mgm" style="background:var(--cold)">FD</span>
+          <span class="cotext">
+            <b>Francis T. Djankpa <span class="ar">↗</span></b>
+            <span class="aff">University of Cape Coast, Ghana</span>
+            <span class="cofocus">Neurophysiology and translational neuroscience. Head of the Department of Physiology.</span>
+          </span>
+        </a>
+    </div>
+  </section>
+
+  <hr class="hr" />
+
+  <!-- NEWS — dates marked — still need setting -->
+  <section id="news">
+    <div class="shead up"><h2>News</h2><span class="mono">Announcements</span></div>
+    <ul class="log up">
+      <li class="ev pinned">
+        <div class="ev-top"><span class="mono">2026 · Aug</span><span class="tagg">Pinned</span></div>
+        <h3>Recruiting PhD and master's students to the BIRS group</h3>
+        <p>Looking for students with backgrounds in biomedical engineering, computer science or
+          psychology who want to work on brain networks, addiction and reward, or neuroimaging
+          software. Send a CV and a short note on what you want to work on.</p>
+      </li>
+      <li class="ev">
+        <div class="ev-top"><span class="mono">2026 · —</span><span class="tagg">Paper</span></div>
+        <h3>Oxytocin co-activation pattern study out in <em>Molecular Psychiatry</em></h3>
+        <p>Dynamic brain connectivity patterns induced by oxytocin, analysed with fMRI
+          co-activation pattern methods.</p>
+      </li>
+      <li class="ev">
+        <div class="ev-top"><span class="mono">2026 · —</span><span class="tagg">Software</span></div>
+        <h3>MIEHS published in <em>NeuroImage</em></h3>
+        <p>The Multi-Indicator Entropy Hub Score, a quantitative approach to hub analysis in brain
+          networks, following on from MQGA.</p>
+      </li>
+      <li class="ev">
+        <div class="ev-top"><span class="mono">— · —</span><span class="tagg">Collaboration</span></div>
+        <h3>China–Cuba Belt and Road Joint Laboratory on Neurotechnology</h3>
+        <p>Ongoing work with the joint laboratory on neurotechnology and brain-apparatus
+          communication.</p>
+      </li>
+      <li class="ev">
+        <div class="ev-top"><span class="mono">— · —</span><span class="tagg">Editorial</span></div>
+        <h3>Serving as Associate Editor at <em>Frontiers in Neuroimaging</em></h3>
+        <p>Handling submissions in brain connectivity, neuroimaging methods and computational
+          neuroscience.</p>
+      </li>
+    </ul>
+  </section>
+
+  <section id="contact">
+    <div class="cta up">
+      <span class="mono">Get in touch</span>
+      <h2>Students, collaborators, reviewers</h2>
+      <p>I am glad to hear from prospective PhD and master's students, from groups working on
+        addiction, connectivity or meta-analytic methods, and from anyone who wants to use or
+        extend the tools coming out of the lab. Say what you are working on — specific emails get
+        better answers.</p>
+      <div class="chips">
+        <a class="chip hot" href="mailto:bklugah@uestc.edu.cn">bklugah@uestc.edu.cn</a>
+        <a class="chip" href="mailto:bklugah@gmail.com">bklugah@gmail.com</a>
+        <a class="chip" href="https://scholar.google.com/citations?user=fvYLHCgAAAAJ">Google Scholar</a>
+        <a class="chip" href="https://orcid.org/0000-0002-3946-9557">ORCID</a>
+        <a class="chip" href="https://github.com/bklugah">GitHub</a>
+        <a class="chip" href="https://www.linkedin.com/in/afromt/">LinkedIn</a>
+        <a class="chip" href="https://loop.frontiersin.org/people/321253/overview">Frontiers Loop</a>
+        <a class="chip" href="https://www.researchgate.net/profile/Benjamin-Klugah-Brown">ResearchGate</a>
+      </div>
+
+      <div class="qrs">
+        <a class="qr" href="https://www.linkedin.com/in/afromt/">
+          <svg viewBox="0 0 31 31" xmlns="http://www.w3.org/2000/svg" aria-label="LinkedIn QR code"><path d="M1 1h7v1h-7zM11 1h6v1h-6zM19 1h1v1h-1zM23 1h7v1h-7zM1 2h1v1h-1zM7 2h1v1h-1zM9 2h1v1h-1zM11 2h1v1h-1zM13 2h1v1h-1zM16 2h1v1h-1zM18 2h1v1h-1zM21 2h1v1h-1zM23 2h1v1h-1zM29 2h1v1h-1zM1 3h1v1h-1zM3 3h3v1h-3zM7 3h1v1h-1zM9 3h2v1h-2zM13 3h1v1h-1zM15 3h1v1h-1zM17 3h1v1h-1zM20 3h1v1h-1zM23 3h1v1h-1zM25 3h3v1h-3zM29 3h1v1h-1zM1 4h1v1h-1zM3 4h3v1h-3zM7 4h1v1h-1zM9 4h1v1h-1zM11 4h1v1h-1zM13 4h1v1h-1zM15 4h4v1h-4zM21 4h1v1h-1zM23 4h1v1h-1zM25 4h3v1h-3zM29 4h1v1h-1zM1 5h1v1h-1zM3 5h3v1h-3zM7 5h1v1h-1zM13 5h4v1h-4zM18 5h4v1h-4zM23 5h1v1h-1zM25 5h3v1h-3zM29 5h1v1h-1zM1 6h1v1h-1zM7 6h1v1h-1zM13 6h3v1h-3zM17 6h1v1h-1zM23 6h1v1h-1zM29 6h1v1h-1zM1 7h7v1h-7zM9 7h1v1h-1zM11 7h1v1h-1zM13 7h1v1h-1zM15 7h1v1h-1zM17 7h1v1h-1zM19 7h1v1h-1zM21 7h1v1h-1zM23 7h7v1h-7zM9 8h3v1h-3zM13 8h2v1h-2zM16 8h2v1h-2zM20 8h2v1h-2zM1 9h1v1h-1zM7 9h1v1h-1zM9 9h3v1h-3zM13 9h1v1h-1zM15 9h1v1h-1zM18 9h3v1h-3zM22 9h2v1h-2zM26 9h3v1h-3zM1 10h1v1h-1zM4 10h2v1h-2zM11 10h3v1h-3zM15 10h7v1h-7zM24 10h2v1h-2zM27 10h2v1h-2zM2 11h1v1h-1zM4 11h2v1h-2zM7 11h1v1h-1zM9 11h1v1h-1zM11 11h1v1h-1zM13 11h1v1h-1zM16 11h1v1h-1zM18 11h1v1h-1zM23 11h1v1h-1zM2 12h1v1h-1zM4 12h1v1h-1zM6 12h1v1h-1zM8 12h1v1h-1zM11 12h1v1h-1zM13 12h1v1h-1zM15 12h1v1h-1zM17 12h1v1h-1zM20 12h2v1h-2zM24 12h1v1h-1zM26 12h1v1h-1zM1 13h1v1h-1zM3 13h1v1h-1zM5 13h4v1h-4zM12 13h1v1h-1zM14 13h3v1h-3zM21 13h1v1h-1zM23 13h2v1h-2zM29 13h1v1h-1zM1 14h1v1h-1zM3 14h1v1h-1zM6 14h1v1h-1zM8 14h2v1h-2zM12 14h1v1h-1zM14 14h8v1h-8zM23 14h1v1h-1zM25 14h1v1h-1zM28 14h2v1h-2zM1 15h4v1h-4zM7 15h3v1h-3zM11 15h1v1h-1zM13 15h5v1h-5zM19 15h1v1h-1zM21 15h4v1h-4zM26 15h2v1h-2zM4 16h1v1h-1zM6 16h1v1h-1zM8 16h1v1h-1zM10 16h1v1h-1zM14 16h2v1h-2zM21 16h5v1h-5zM27 16h1v1h-1zM29 16h1v1h-1zM2 17h4v1h-4zM7 17h2v1h-2zM10 17h1v1h-1zM12 17h2v1h-2zM15 17h1v1h-1zM18 17h1v1h-1zM20 17h1v1h-1zM24 17h1v1h-1zM26 17h2v1h-2zM1 18h1v1h-1zM4 18h1v1h-1zM6 18h1v1h-1zM11 18h3v1h-3zM16 18h6v1h-6zM23 18h3v1h-3zM27 18h3v1h-3zM1 19h5v1h-5zM7 19h2v1h-2zM10 19h1v1h-1zM14 19h3v1h-3zM20 19h2v1h-2zM26 19h1v1h-1zM29 19h1v1h-1zM1 20h1v1h-1zM3 20h2v1h-2zM6 20h1v1h-1zM9 20h1v1h-1zM11 20h3v1h-3zM15 20h3v1h-3zM19 20h1v1h-1zM21 20h1v1h-1zM23 20h3v1h-3zM1 21h1v1h-1zM3 21h1v1h-1zM7 21h5v1h-5zM18 21h2v1h-2zM21 21h5v1h-5zM27 21h3v1h-3zM9 22h1v1h-1zM12 22h1v1h-1zM14 22h1v1h-1zM16 22h1v1h-1zM18 22h2v1h-2zM21 22h1v1h-1zM25 22h2v1h-2zM1 23h7v1h-7zM10 23h2v1h-2zM14 23h3v1h-3zM18 23h1v1h-1zM20 23h2v1h-2zM23 23h1v1h-1zM25 23h3v1h-3zM1 24h1v1h-1zM7 24h1v1h-1zM10 24h5v1h-5zM16 24h1v1h-1zM20 24h2v1h-2zM25 24h1v1h-1zM28 24h2v1h-2zM1 25h1v1h-1zM3 25h3v1h-3zM7 25h1v1h-1zM10 25h5v1h-5zM16 25h1v1h-1zM20 25h7v1h-7zM28 25h2v1h-2zM1 26h1v1h-1zM3 26h3v1h-3zM7 26h1v1h-1zM10 26h5v1h-5zM16 26h2v1h-2zM19 26h2v1h-2zM22 26h1v1h-1zM24 26h1v1h-1zM26 26h2v1h-2zM29 26h1v1h-1zM1 27h1v1h-1zM3 27h3v1h-3zM7 27h1v1h-1zM10 27h4v1h-4zM16 27h1v1h-1zM19 27h2v1h-2zM22 27h7v1h-7zM1 28h1v1h-1zM7 28h1v1h-1zM10 28h2v1h-2zM13 28h4v1h-4zM24 28h1v1h-1zM26 28h2v1h-2zM29 28h1v1h-1zM1 29h7v1h-7zM9 29h1v1h-1zM13 29h1v1h-1zM16 29h1v1h-1zM18 29h1v1h-1zM20 29h1v1h-1zM23 29h5v1h-5z" fill="#0B0E14"/></svg>
+          <b>LinkedIn</b><span>in/afromt</span>
+        </a>
+        <a class="qr" href="https://wa.me/8615208436455">
+          <svg viewBox="0 0 31 31" xmlns="http://www.w3.org/2000/svg" aria-label="WhatsApp QR code"><path d="M1 1h7v1h-7zM15 1h1v1h-1zM20 1h2v1h-2zM23 1h7v1h-7zM1 2h1v1h-1zM7 2h1v1h-1zM9 2h1v1h-1zM12 2h1v1h-1zM14 2h1v1h-1zM20 2h1v1h-1zM23 2h1v1h-1zM29 2h1v1h-1zM1 3h1v1h-1zM3 3h3v1h-3zM7 3h1v1h-1zM11 3h1v1h-1zM13 3h1v1h-1zM16 3h1v1h-1zM23 3h1v1h-1zM25 3h3v1h-3zM29 3h1v1h-1zM1 4h1v1h-1zM3 4h3v1h-3zM7 4h1v1h-1zM10 4h3v1h-3zM14 4h1v1h-1zM17 4h1v1h-1zM20 4h2v1h-2zM23 4h1v1h-1zM25 4h3v1h-3zM29 4h1v1h-1zM1 5h1v1h-1zM3 5h3v1h-3zM7 5h1v1h-1zM9 5h1v1h-1zM11 5h1v1h-1zM13 5h2v1h-2zM17 5h1v1h-1zM20 5h2v1h-2zM23 5h1v1h-1zM25 5h3v1h-3zM29 5h1v1h-1zM1 6h1v1h-1zM7 6h1v1h-1zM10 6h3v1h-3zM15 6h3v1h-3zM19 6h2v1h-2zM23 6h1v1h-1zM29 6h1v1h-1zM1 7h7v1h-7zM9 7h1v1h-1zM11 7h1v1h-1zM13 7h1v1h-1zM15 7h1v1h-1zM17 7h1v1h-1zM19 7h1v1h-1zM21 7h1v1h-1zM23 7h7v1h-7zM10 8h3v1h-3zM16 8h1v1h-1zM18 8h1v1h-1zM20 8h1v1h-1zM1 9h1v1h-1zM3 9h1v1h-1zM5 9h1v1h-1zM7 9h1v1h-1zM10 9h2v1h-2zM13 9h1v1h-1zM17 9h4v1h-4zM25 9h1v1h-1zM28 9h1v1h-1zM2 10h5v1h-5zM9 10h1v1h-1zM11 10h1v1h-1zM13 10h2v1h-2zM16 10h4v1h-4zM22 10h2v1h-2zM26 10h1v1h-1zM29 10h1v1h-1zM2 11h1v1h-1zM4 11h1v1h-1zM6 11h2v1h-2zM9 11h3v1h-3zM13 11h1v1h-1zM15 11h3v1h-3zM21 11h5v1h-5zM27 11h3v1h-3zM2 12h1v1h-1zM5 12h1v1h-1zM9 12h1v1h-1zM11 12h1v1h-1zM14 12h2v1h-2zM17 12h2v1h-2zM20 12h1v1h-1zM25 12h1v1h-1zM28 12h1v1h-1zM2 13h4v1h-4zM7 13h3v1h-3zM12 13h1v1h-1zM15 13h2v1h-2zM18 13h2v1h-2zM23 13h1v1h-1zM26 13h1v1h-1zM28 13h2v1h-2zM2 14h2v1h-2zM5 14h1v1h-1zM8 14h2v1h-2zM11 14h2v1h-2zM15 14h2v1h-2zM18 14h2v1h-2zM22 14h2v1h-2zM26 14h1v1h-1zM29 14h1v1h-1zM1 15h1v1h-1zM3 15h2v1h-2zM7 15h2v1h-2zM11 15h1v1h-1zM14 15h1v1h-1zM21 15h2v1h-2zM26 15h1v1h-1zM28 15h2v1h-2zM1 16h2v1h-2zM10 16h2v1h-2zM16 16h1v1h-1zM18 16h2v1h-2zM23 16h1v1h-1zM25 16h2v1h-2zM28 16h1v1h-1zM1 17h4v1h-4zM6 17h2v1h-2zM10 17h2v1h-2zM17 17h3v1h-3zM23 17h1v1h-1zM26 17h1v1h-1zM28 17h2v1h-2zM2 18h1v1h-1zM4 18h2v1h-2zM9 18h2v1h-2zM13 18h2v1h-2zM16 18h4v1h-4zM23 18h2v1h-2zM26 18h2v1h-2zM29 18h1v1h-1zM1 19h1v1h-1zM6 19h2v1h-2zM12 19h1v1h-1zM15 19h3v1h-3zM24 19h2v1h-2zM28 19h2v1h-2zM2 20h1v1h-1zM5 20h2v1h-2zM8 20h1v1h-1zM11 20h5v1h-5zM17 20h6v1h-6zM24 20h1v1h-1zM26 20h1v1h-1zM28 20h1v1h-1zM1 21h1v1h-1zM3 21h3v1h-3zM7 21h1v1h-1zM9 21h1v1h-1zM11 21h3v1h-3zM15 21h2v1h-2zM19 21h1v1h-1zM21 21h5v1h-5zM9 22h3v1h-3zM15 22h2v1h-2zM21 22h1v1h-1zM25 22h1v1h-1zM27 22h3v1h-3zM1 23h7v1h-7zM13 23h2v1h-2zM18 23h1v1h-1zM20 23h2v1h-2zM23 23h1v1h-1zM25 23h2v1h-2zM28 23h2v1h-2zM1 24h1v1h-1zM7 24h1v1h-1zM10 24h3v1h-3zM16 24h1v1h-1zM20 24h2v1h-2zM25 24h2v1h-2zM29 24h1v1h-1zM1 25h1v1h-1zM3 25h3v1h-3zM7 25h1v1h-1zM9 25h2v1h-2zM12 25h1v1h-1zM17 25h1v1h-1zM21 25h5v1h-5zM1 26h1v1h-1zM3 26h3v1h-3zM7 26h1v1h-1zM11 26h4v1h-4zM16 26h3v1h-3zM22 26h1v1h-1zM24 26h2v1h-2zM27 26h1v1h-1zM1 27h1v1h-1zM3 27h3v1h-3zM7 27h1v1h-1zM9 27h1v1h-1zM11 27h4v1h-4zM16 27h2v1h-2zM19 27h1v1h-1zM21 27h2v1h-2zM24 27h3v1h-3zM29 27h1v1h-1zM1 28h1v1h-1zM7 28h1v1h-1zM10 28h2v1h-2zM13 28h3v1h-3zM17 28h3v1h-3zM21 28h1v1h-1zM25 28h1v1h-1zM28 28h1v1h-1zM1 29h7v1h-7zM9 29h1v1h-1zM11 29h1v1h-1zM14 29h1v1h-1zM16 29h1v1h-1zM19 29h1v1h-1zM21 29h1v1h-1zM24 29h3v1h-3zM28 29h2v1h-2z" fill="#0B0E14"/></svg>
+          <b>WhatsApp</b><span>+86 152 0843 6455</span>
+        </a>
+        <a class="qr" href="#contact" onclick="return false" style="cursor:default">
+          <svg viewBox="0 0 23 23" xmlns="http://www.w3.org/2000/svg" aria-label="WeChat ID QR code"><path d="M1 1h7v1h-7zM9 1h2v1h-2zM12 1h2v1h-2zM15 1h7v1h-7zM1 2h1v1h-1zM7 2h1v1h-1zM10 2h2v1h-2zM13 2h1v1h-1zM15 2h1v1h-1zM21 2h1v1h-1zM1 3h1v1h-1zM3 3h3v1h-3zM7 3h1v1h-1zM12 3h2v1h-2zM15 3h1v1h-1zM17 3h3v1h-3zM21 3h1v1h-1zM1 4h1v1h-1zM3 4h3v1h-3zM7 4h1v1h-1zM9 4h3v1h-3zM15 4h1v1h-1zM17 4h3v1h-3zM21 4h1v1h-1zM1 5h1v1h-1zM3 5h3v1h-3zM7 5h1v1h-1zM9 5h3v1h-3zM13 5h1v1h-1zM15 5h1v1h-1zM17 5h3v1h-3zM21 5h1v1h-1zM1 6h1v1h-1zM7 6h1v1h-1zM9 6h1v1h-1zM12 6h1v1h-1zM15 6h1v1h-1zM21 6h1v1h-1zM1 7h7v1h-7zM9 7h1v1h-1zM11 7h1v1h-1zM13 7h1v1h-1zM15 7h7v1h-7zM9 8h1v1h-1zM12 8h2v1h-2zM1 9h1v1h-1zM5 9h1v1h-1zM7 9h3v1h-3zM12 9h1v1h-1zM14 9h5v1h-5zM21 9h1v1h-1zM3 10h3v1h-3zM8 10h1v1h-1zM11 10h5v1h-5zM17 10h4v1h-4zM4 11h4v1h-4zM12 11h1v1h-1zM14 11h1v1h-1zM17 11h1v1h-1zM20 11h1v1h-1zM2 12h3v1h-3zM8 12h3v1h-3zM14 12h1v1h-1zM21 12h1v1h-1zM2 13h1v1h-1zM5 13h1v1h-1zM7 13h2v1h-2zM10 13h1v1h-1zM13 13h2v1h-2zM16 13h1v1h-1zM20 13h2v1h-2zM9 14h3v1h-3zM13 14h2v1h-2zM17 14h2v1h-2zM20 14h2v1h-2zM1 15h7v1h-7zM9 15h2v1h-2zM13 15h1v1h-1zM17 15h4v1h-4zM1 16h1v1h-1zM7 16h1v1h-1zM10 16h4v1h-4zM17 16h1v1h-1zM20 16h1v1h-1zM1 17h1v1h-1zM3 17h3v1h-3zM7 17h1v1h-1zM9 17h2v1h-2zM12 17h1v1h-1zM14 17h3v1h-3zM19 17h2v1h-2zM1 18h1v1h-1zM3 18h3v1h-3zM7 18h1v1h-1zM11 18h3v1h-3zM16 18h2v1h-2zM20 18h2v1h-2zM1 19h1v1h-1zM3 19h3v1h-3zM7 19h1v1h-1zM10 19h3v1h-3zM15 19h1v1h-1zM17 19h1v1h-1zM19 19h1v1h-1zM1 20h1v1h-1zM7 20h1v1h-1zM11 20h1v1h-1zM14 20h4v1h-4zM1 21h7v1h-7zM9 21h1v1h-1zM11 21h1v1h-1zM13 21h5v1h-5zM21 21h1v1h-1z" fill="#0B0E14"/></svg>
+          <b>WeChat</b><span>BenKlugah</span>
+        </a>
+      </div>
+    </div>
+
+    <footer>
+      <span class="mono">© <span id="yr">2026</span> Benjamin Klugah-Brown</span>
+      <span class="mono">School of Life Science &amp; Technology · UESTC · Chengdu</span>
+    </footer>
+  </section>
+
+</main>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var MODULES = [
+    {code:"NET", name:"Networks & computational neuroscience"},
+    {code:"IMG", name:"Neuroimaging methods"},
+    {code:"ADD", name:"Addiction, reward & compulsivity"},
+    {code:"MLX", name:"Machine learning & data science"},
+    {code:"SYN", name:"Evidence synthesis"},
+    {code:"TLS", name:"Software & translational neuroinformatics"}
+  ];
+  var PER = 4, N = MODULES.length * PER;
+  var CELL = 14, STEP = 15.4, X0 = 48, Y0 = 30;
+
+  var AFF = [
+    [1.00,0.72,0.62,0.58,0.55,0.60],
+    [0.72,1.00,0.55,0.64,0.66,0.58],
+    [0.62,0.55,1.00,0.52,0.74,0.42],
+    [0.58,0.64,0.52,1.00,0.45,0.68],
+    [0.55,0.66,0.74,0.45,1.00,0.44],
+    [0.60,0.58,0.42,0.68,0.44,1.00]
+  ];
+
+  var seed = 20260817;
+  function rnd(){ seed = (seed * 1664525 + 1013904223) % 4294967296; return seed / 4294967296; }
+  function mix(a,b,t){
+    return "rgb(" + Math.round(a[0]+(b[0]-a[0])*t) + "," + Math.round(a[1]+(b[1]-a[1])*t) +
+           "," + Math.round(a[2]+(b[2]-a[2])*t) + ")";
+  }
+  var BASE=[18,23,34], HOT=[255,122,47], PEAK=[255,194,75];
+  function colour(v){
+    if(v < 0.72) return mix(BASE, HOT, (v/0.72)*0.92);
+    return mix(HOT, PEAK, (v-0.72)/0.28);
+  }
+
+  var svg = document.getElementById("matrix");
+  var readout = document.getElementById("readout");
+  var DEFAULT_READ = "Six research domains, ordered by module. Hover a cell to read the pair it connects; click to jump to that area.";
+
+  if(svg){
+    var NS = "http://www.w3.org/2000/svg", vals = [], i, j;
+    for(i=0;i<N;i++){ vals[i] = []; }
+    for(i=0;i<N;i++){
+      for(j=i;j<N;j++){
+        var mi = Math.floor(i/PER), mj = Math.floor(j/PER);
+        var v = (i===j) ? 1 : Math.max(0.04, Math.min(1, AFF[mi][mj]*(0.62 + rnd()*0.55)));
+        vals[i][j] = v; vals[j][i] = v;
+      }
+    }
+    var frag = document.createDocumentFragment();
+    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    MODULES.forEach(function(m,k){
+      var mid = Y0 + k*PER*STEP + (PER*STEP)/2 - 1;
+      var t = document.createElementNS(NS,"text");
+      t.setAttribute("x", X0-9); t.setAttribute("y", mid); t.setAttribute("text-anchor","end");
+      t.setAttribute("font-family","IBM Plex Mono, monospace"); t.setAttribute("font-size","9.5");
+      t.setAttribute("fill","#7A88A0"); t.setAttribute("letter-spacing","1");
+      t.textContent = m.code; frag.appendChild(t);
+      var t2 = document.createElementNS(NS,"text");
+      t2.setAttribute("x", X0 + k*PER*STEP); t2.setAttribute("y", Y0-10);
+      t2.setAttribute("font-family","IBM Plex Mono, monospace"); t2.setAttribute("font-size","9.5");
+      t2.setAttribute("fill","#7A88A0"); t2.setAttribute("letter-spacing","1");
+      t2.textContent = m.code; frag.appendChild(t2);
+    });
+
+    for(i=0;i<N;i++){
+      for(j=0;j<N;j++){
+        var r = document.createElementNS(NS,"rect");
+        r.setAttribute("class","cell");
+        r.setAttribute("x", X0 + j*STEP); r.setAttribute("y", Y0 + i*STEP);
+        r.setAttribute("width", CELL); r.setAttribute("height", CELL);
+        r.setAttribute("fill", colour(vals[i][j]));
+        r.setAttribute("data-i", i); r.setAttribute("data-j", j);
+        if(!reduce){ r.setAttribute("opacity","0"); r.style.transitionDelay = ((i+j)*9)+"ms"; }
+        frag.appendChild(r);
+      }
+    }
+    svg.appendChild(frag);
+
+    if(!reduce){
+      requestAnimationFrame(function(){ requestAnimationFrame(function(){
+        svg.querySelectorAll("rect.cell").forEach(function(r){ r.setAttribute("opacity","1"); });
+      }); });
+    }
+
+    var hovered = null;
+    svg.addEventListener("mousemove", function(e){
+      var t = e.target;
+      if(t.tagName !== "rect" || t === hovered) return;
+      if(hovered) hovered.removeAttribute("stroke");
+      hovered = t;
+      t.setAttribute("stroke","#E9EDF4"); t.setAttribute("stroke-width","1.5");
+      var a = MODULES[Math.floor(+t.dataset.i/PER)], b = MODULES[Math.floor(+t.dataset.j/PER)];
+      readout.innerHTML = "<b>"+a.code+"</b> "+a.name+"<br><i>"+b.code+"</i> "+b.name+
+                          " &nbsp;·&nbsp; r = "+vals[+t.dataset.i][+t.dataset.j].toFixed(2);
+    });
+    svg.addEventListener("mouseleave", function(){
+      if(hovered){ hovered.removeAttribute("stroke"); hovered = null; }
+      readout.textContent = DEFAULT_READ;
+    });
+    svg.addEventListener("click", function(e){
+      var t = e.target; if(t.tagName !== "rect") return;
+      var el = document.getElementById("area-" + MODULES[Math.floor(+t.dataset.i/PER)].code);
+      if(el) el.scrollIntoView({behavior: reduce ? "auto" : "smooth", block:"center"});
+    });
+  }
+
+  var navLinks = [].slice.call(document.querySelectorAll('#railnav a, #bar a[href^="#"]'));
+  var spy = new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(!e.isIntersecting) return;
+      navLinks.forEach(function(a){
+        a.setAttribute("aria-current", a.getAttribute("href") === "#"+e.target.id ? "true" : "false");
+      });
+    });
+  }, { rootMargin: "-45% 0px -50% 0px" });
+  document.querySelectorAll("main section").forEach(function(s){ spy.observe(s); });
+
+  var rev = new IntersectionObserver(function(es,o){
+    es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add("seen"); o.unobserve(e.target); } });
+  }, { threshold: 0.1, rootMargin: "0px 0px -6% 0px" });
+  document.querySelectorAll(".up").forEach(function(el){ rev.observe(el); });
+
+  document.querySelectorAll(".prow").forEach(function(b){
+    b.addEventListener("click", function(){
+      var li = b.closest(".pub");
+      var open = li.classList.toggle("on");
+      b.setAttribute("aria-expanded", open ? "true" : "false");
+    });
+  });
+
+  var counter = document.getElementById("count");
+  function tally(){
+    var vis = document.querySelectorAll(".pub:not([hidden])").length;
+    if(counter) counter.textContent = vis + " shown";
+  }
+  var fb = document.getElementById("filt");
+  if(fb){
+    fb.addEventListener("click", function(ev){
+      var b = ev.target.closest("button"); if(!b) return;
+      var f = b.dataset.f;
+      fb.querySelectorAll("button").forEach(function(x){
+        x.setAttribute("aria-pressed", x === b ? "true" : "false");
+      });
+      document.querySelectorAll(".pub").forEach(function(p){
+        p.hidden = !(f === "all" || p.dataset.type === f);
+        if(p.hidden){ p.classList.remove("on"); }
+      });
+      tally();
+    });
+  }
+  tally();
+
+  document.querySelectorAll(".cite").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      var bib = btn.closest(".pin").querySelector(".bib"); if(!bib) return;
+      var flash = function(){
+        var old = btn.textContent;
+        btn.textContent = "Copied"; btn.classList.add("ok");
+        setTimeout(function(){ btn.textContent = old; btn.classList.remove("ok"); }, 1600);
+      };
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(bib.textContent).then(flash, function(){});
+      } else {
+        var ta = document.createElement("textarea");
+        ta.value = bib.textContent; document.body.appendChild(ta); ta.select();
+        try { document.execCommand("copy"); flash(); } catch(err){}
+        document.body.removeChild(ta);
+      }
+    });
+  });
+
+  var grid = document.getElementById("repos");
+  var gh = grid && grid.dataset.gh;
+  var esc = function(s){
+    return String(s == null ? "" : s).replace(/[&<>"]/g, function(c){
+      return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];
+    });
+  };
+  if(gh){
+    fetch("https://api.github.com/users/" + gh + "/repos?sort=updated&per_page=100")
+      .then(function(r){ if(!r.ok) throw new Error(r.status); return r.json(); })
+      .then(function(rs){
+        var top = rs.filter(function(r){ return !r.fork && !r.archived; })
+                    .sort(function(a,b){
+                      return (b.stargazers_count - a.stargazers_count) ||
+                             (new Date(b.pushed_at) - new Date(a.pushed_at));
+                    }).slice(0,6);
+        if(!top.length){
+          grid.innerHTML = '<div class="loading">No public repositories yet — ' +
+            '<a href="https://github.com/'+esc(gh)+'" style="color:var(--hot)">github.com/'+esc(gh)+'</a></div>';
+          return;
+        }
+        grid.innerHTML = top.map(function(r){
+          return '<a class="repo" href="'+esc(r.html_url)+'">' +
+            '<h3>'+esc(r.name)+' <span class="ar">\u2197</span></h3>' +
+            '<p>'+esc(r.description || "No description yet.")+'</p>' +
+            '<div class="rmeta">' +
+            (r.language ? '<span class="rlang">'+esc(r.language)+'</span>' : '') +
+            '<span>\u2605 '+r.stargazers_count+'</span></div></a>';
+        }).join("");
+      })
+      .catch(function(){
+        grid.innerHTML = '<div class="loading">Could not reach the GitHub API just now — ' +
+          '<a href="https://github.com/'+esc(gh)+'" style="color:var(--hot)">browse the repositories directly</a>.</div>';
+      });
+  }
+
+  document.getElementById("yr").textContent = new Date().getFullYear();
+})();
+</script>
+</body>
+</html>
